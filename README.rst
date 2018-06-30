@@ -48,3 +48,8 @@ Latest development version can be installed with:
     cd sportmonks
     pip install ./
 
+Documentation
+=============
+
+Documentation is at http://sportmonks.readthedocs.io.
+
