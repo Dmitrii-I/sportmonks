@@ -1,6 +1,9 @@
 sportmonks
 ==========
 
+.. image:: https://api.travis-ci.org/Dmitrii-I/sportmonks.svg?branch=master
+       :target: https://travis-ci.org/Dmitrii-I/sportmonks
+
 `sportmonks` is a Python 3.5+ package that implements `SportMonks <https://www.sportmonks.com>`__ API. While SportMonks (the company) offers data for various sports, this package implements only soccer. There are no plans to implement other sports.
 
 Disclaimer: `sportmonks` Python package authors are not affiliated with SportMonks the company.
