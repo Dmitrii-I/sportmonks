@@ -8,6 +8,9 @@ sportmonks
 .. image:: https://badge.fury.io/py/sportmonks.svg
        :target: https://badge.fury.io/py/sportmonks
 
+.. image:: https://readthedocs.org/projects/sportmonks/badge
+   :target: https://sportmonks.readthedocs.io
+
 `sportmonks` is a Python 3.5+ package that implements `SportMonks <https://www.sportmonks.com>`__ API. While SportMonks (the company) offers data for various sports, this package implements only soccer. There are no plans to implement other sports.
 
 Disclaimer: `sportmonks` Python package authors are not affiliated with SportMonks the company.
