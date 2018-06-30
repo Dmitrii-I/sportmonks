@@ -7,3 +7,5 @@ __pycache__/
 .pytest_cache/
 dist/
 sdist/
+build/
+sportmonks.egg-info/
