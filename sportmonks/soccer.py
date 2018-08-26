@@ -30,7 +30,6 @@ class SoccerApiV2(base.BaseApiV2):
             'continent': self.continents,
             'country': self.countries,
             'league': self.leagues,
-            'season': self.seasons,
             'bookmaker': self.bookmakers
         }
 
@@ -117,7 +116,7 @@ class SoccerApiV2(base.BaseApiV2):
         Valid objects are: `league`, `stages`, `rounds`, `fixtures`, `upcoming`, `results`, `groups`.
         """
 
-        return self._lookup_table(sportmonks_object='season', includes=includes)[season_id]
+        return self._http_get(endpoint=join('seasons', str(season_id)), includes=includes)
 
     def seasons(self, includes: tuple = None) -> List[Dict]:
         """ Returns all seasons.
