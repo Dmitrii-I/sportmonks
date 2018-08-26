@@ -8,6 +8,7 @@ from os.path import join
 from logging import getLogger
 from urllib.parse import urlsplit, parse_qs
 from typing import Dict, List
+from sportmonks import __version__
 
 log = getLogger(__name__)
 
@@ -30,7 +31,10 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         self.http_requests_made = 0
         self.base_params = {'api_token': self.api_token, 'tz': str(self.timezone)}
-        self.base_headers = {'Accept-Encoding': 'gzip, deflate'}
+        self.base_headers = {
+            'Accept-Encoding': 'gzip, deflate',
+            'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
+        }
 
     def _unnested(self, dictionary: dict) -> Dict:
         """ Returns dictionary with unnested data.
