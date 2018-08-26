@@ -127,7 +127,7 @@ class SoccerApiV2(base.BaseApiV2):
 
         return self._http_get(endpoint='seasons', includes=includes)
 
-    def season_results(self, season_id: int, includes: tuple = None) -> List[Dict]:
+    def season_results(self, season_id: int, includes: tuple = tuple()) -> List[Dict]:
         """ Returns completed fixtures of a season.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 1.
