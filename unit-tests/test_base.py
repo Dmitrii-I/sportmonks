@@ -2,6 +2,7 @@
 
 import unittest
 from unittest.mock import Mock, patch
+from sportmonks import __version__
 import pytz
 import tzlocal
 import sportmonks.base as base
@@ -48,7 +49,10 @@ class TestBaseApiV20(unittest.TestCase):
         mocked_get.assert_called_once_with(
             url='bar/some_endpoint',
             params={'api_token': 'foo', 'tz': 'UTC', 'param': '1,2', 'include': 'foo,bar'},
-            headers={'Accept-Encoding': 'gzip, deflate'}
+            headers={
+                'Accept-Encoding': 'gzip, deflate',
+                'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
+            }
         )
         self.assertEqual(1, api.http_requests_made)
 
