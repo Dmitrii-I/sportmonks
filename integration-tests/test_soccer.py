@@ -93,12 +93,7 @@ class TestSoccerApiV20:
 
         assert season['name'] == '2017/2018'
         assert season['league_id'] == 271
-
-        # fixtures includes is always missing even though SportMonks documentation says it is available
-        if 'fixtures' in season:
-            raise KeyError('Found `fixtures` includes! The test needs to be adjusted to test for this')
-
-        assert set(includes) - {'fixtures'} <= set(season.keys())
+        assert set(includes) <= set(season.keys())
 
     def test_season_results(self, soccer_api):
         """ As per [1], the valid includes for a fixture are: localTeam, visitorTeam, substitutions, goals, cards,
