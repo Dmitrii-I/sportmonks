@@ -85,6 +85,13 @@ class TestSoccerApiV20(unittest.TestCase):
         self.assertEqual('foo', SoccerApiV2.season_results(api, season_id=1, includes=('foo', 'bar')))
         api.season.assert_called_once_with(season_id=1, includes=('results', 'results.foo', 'results.bar'))
 
+        # Test without any includes
+        api = Mock()
+        api.season.return_value = {'results': 'foo'}
+        # noinspection PyCallByClass, PyTypeChecker
+        self.assertEqual('foo', SoccerApiV2.season_results(api, season_id=1))
+        api.season.assert_called_once_with(season_id=1, includes=('results',))
+
     def test_fixtures(self):
         api = Mock()
         # noinspection PyCallByClass, PyTypeChecker
