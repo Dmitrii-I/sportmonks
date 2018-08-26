@@ -18,14 +18,13 @@ class TestSoccerApiV20(unittest.TestCase):
     def test_callables_cached_objects(self):
 
         api = SoccerApiV2('foo')
-        expected_cached_objects = {'continent', 'country', 'league', 'season', 'bookmaker'}
+        expected_cached_objects = {'continent', 'country', 'league', 'bookmaker'}
 
         self.assertEqual(expected_cached_objects, set(api._callables_cached_objects.keys()))
 
         self.assertEqual(api.continents, api._callables_cached_objects['continent'])
         self.assertEqual(api.countries, api._callables_cached_objects['country'])
         self.assertEqual(api.leagues, api._callables_cached_objects['league'])
-        self.assertEqual(api.seasons, api._callables_cached_objects['season'])
         self.assertEqual(api.bookmakers, api._callables_cached_objects['bookmaker'])
 
     def test_continents(self):
@@ -75,10 +74,9 @@ class TestSoccerApiV20(unittest.TestCase):
 
     def test_season(self):
         api = Mock()
-        api._lookup_table.return_value = {1: 'foo'}
         # noinspection PyCallByClass, PyTypeChecker
-        self.assertEqual('foo', SoccerApiV2.season(api, season_id=1, includes=('foo', 'bar')))
-        api._lookup_table.assert_called_once_with(sportmonks_object='season', includes=('foo', 'bar'))
+        SoccerApiV2.season(api, season_id=1, includes=('foo', 'bar'))
+        api._http_get.assert_called_once_with(endpoint='seasons/1', includes=('foo', 'bar'))
 
     def test_season_results(self):
         api = Mock()
