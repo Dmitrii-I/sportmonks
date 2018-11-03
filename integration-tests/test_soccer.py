@@ -375,7 +375,8 @@ class TestSoccerApiV20:
         expected = {
             'avg_first_goal_conceded', 'avg_first_goal_scored', 'avg_goals_per_game_conceded',
             'avg_goals_per_game_scored', 'clean_sheet', 'draw', 'failed_to_score', 'goals_against',
-            'goals_for', 'lost', 'scoring_minutes', 'season_id', 'team_id', 'win'
+            'goals_for', 'lost', 'scoring_minutes', 'season_id', 'team_id', 'win',
+            'stage_id'
         }
 
         team_stats = soccer_api.team_stats(team_id=85)
