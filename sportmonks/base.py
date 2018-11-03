@@ -88,10 +88,12 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             if isinstance(params[k], list):
                 params[k] = ','.join(str(el) for el in params[k])
 
-        log.info('GET %s, params: %s' % (url, params))
+        log.info('GET %s, params: %s' %
+                 (url, {k: v if k != 'api_token' else 'API_TOKEN_REDACTED' for k, v in params.items()}))
         self.http_requests_made += 1
         raw_response = requests.get(url=url, params=params, headers=self.base_headers)
-        log.info('GET succeeded of the complete url: %s' % raw_response.request.url)
+        log.info('GET succeeded of the complete url: %s' %
+                 raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
         response = raw_response.json()
 
         if 'error' in response:
