@@ -34,7 +34,7 @@ class TestSoccerApiV20:
 
             # Following countries have no continent associated with them:
             countries_without_continent = {99474, 190324, 1442002, 1884978, 3499960, 8151924, 9374632, 11311331,
-                                           12444275, 14534056, 14566098, 14566636, 15288356, 15629849}
+                                           12444275, 14534056, 14566098, 14566636, 15288356, 15629849, 25293454}
 
             expected = {'name', 'id', 'extra', 'continent', 'leagues'}
 
