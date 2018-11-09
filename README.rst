@@ -27,7 +27,7 @@ Print today's games:
     >>> from sportmonks.soccer import SoccerApiV2
     >>> soccer = SoccerApiV2(api_token='My API token')
 
-    >>> fixtures = soccer.fixtures_today(include=('localTeam', 'visitorTeam'))
+    >>> fixtures = soccer.fixtures_today(includes=('localTeam', 'visitorTeam'))
     >>> for f in fixtures:
     >>>    print(f['localTeam']['name'], 'plays at home against', f['visitorTeam']['name'])
 
