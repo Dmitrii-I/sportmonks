@@ -11,11 +11,22 @@ class TestSoccerApiV20(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_init(self):
+    @patch('sportmonks.soccer.get')
+    def test_init(self, mocked_get):
+
+        mocked_response = MagicMock()
+        mocked_response.json.return_value = {'meta': 'foo'}
+        mocked_get.return_value = mocked_response
+
         api = SoccerApiV2(api_token='foo')
         self.assertEqual('foo', api.api_token)
 
-    def test_callables_cached_objects(self):
+    @patch('sportmonks.soccer.get')
+    def test_callables_cached_objects(self, mocked_get):
+
+        mocked_response = MagicMock()
+        mocked_response.json.return_value = {'meta': 'foo'}
+        mocked_get.return_value = mocked_response
 
         api = SoccerApiV2('foo')
         expected_cached_objects = {'continent', 'country', 'league', 'bookmaker'}
