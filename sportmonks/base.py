@@ -48,6 +48,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         :raises: IncompatibleDictionarySchema
         """
 
+        log.debug('Unnest dictionary')
         unnested = dict()
 
         for k in dictionary:
@@ -88,17 +89,16 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             if isinstance(params[k], list):
                 params[k] = ','.join(str(el) for el in params[k])
 
-        log.info('GET %s, params: %s' %
+        log.debug('GET %s, params: %s' %
                  (url, {k: v if k != 'api_token' else 'API_TOKEN_REDACTED' for k, v in params.items()}))
         self.http_requests_made += 1
         raw_response = requests.get(url=url, params=params, headers=self.base_headers)
-        log.info('GET succeeded of the complete url: %s' %
+        log.debug('GET succeeded of the complete url: %s' %
                  raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
         response = raw_response.json()
 
         if 'error' in response:
             log.error('Error: %s' % response['error']['message'])
-            log.error(raw_response.request)
             raise SportMonksAPIError(response['error']['message'])
 
         if ('meta' in response
@@ -148,6 +148,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         :returns: A lookup object.
         """
 
+        log.debug('Lookup %s from cache' % sportmonks_object)
         try:
             return {obj['id']: obj for obj in self._callables_cached_objects[sportmonks_object](**kwargs)}
         except KeyError:
