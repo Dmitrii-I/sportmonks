@@ -84,6 +84,9 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         url = join(self.base_url, endpoint)
         params = {**self.base_params, **(params or {}), **{'include': ','.join(includes or [])}}
 
+        if 'page' not in params:
+            params['page'] = 1
+
         # Lists must be serialized to a comma-separated string
         for k in params:
             if isinstance(params[k], list):
@@ -103,13 +106,15 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         if ('meta' in response
                 and 'pagination' in response['meta']
-                and 'next' in response['meta']['pagination']['links']):
-            query = urlsplit(response['meta']['pagination']['links']['next']).query
-            params = parse_qs(query)
-            page = {'page': params['page'][0]}
-            response_single_page = self._http_get(endpoint=endpoint, params={**(params or {}), **page},
-                                                  includes=includes)
-            response['data'] += response_single_page
+                and response['meta']['pagination']['current_page'] < response['meta']['pagination']['total_pages']
+                and response['meta']['pagination']['current_page'] == 1):
+            log.debug('Response is paginated: %s pages' % response['meta']['pagination']['total_pages'])
+            log.debug('Request pages 2 through %s' % response['meta']['pagination']['total_pages'])
+
+            for page_number in range(2, response['meta']['pagination']['total_pages'] + 1):
+                params['page'] = page_number
+                response_single_page = self._http_get(endpoint=endpoint, params=params, includes=includes)
+                response['data'] += response_single_page
 
         if 'data' in response:
             response = response['data']
