@@ -322,7 +322,7 @@ class TestSoccerApiV20:
         assert standings == soccer_api.standings(season_id=6361)
 
         expected = {'away', 'group_id', 'group_name', 'home', 'overall', 'points', 'position', 'recent_form', 'result',
-                    'status', 'team_id', 'team_name', 'total'}
+                    'status', 'team_id', 'team_name', 'total', 'round_name', 'round_id'}
 
         for standings_season_stage in standings:
             for standing_entry in standings_season_stage['standings']:
