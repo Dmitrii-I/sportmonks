@@ -48,7 +48,7 @@ class TestBaseApiV20(unittest.TestCase):
         self.assertEqual({'response': 'foo'}, response)
         mocked_get.assert_called_once_with(
             url='bar/some_endpoint',
-            params={'api_token': 'foo', 'tz': 'UTC', 'param': '1,2', 'include': 'foo,bar'},
+            params={'api_token': 'foo', 'tz': 'UTC', 'param': '1,2', 'include': 'foo,bar', 'page': 1},
             headers={
                 'Accept-Encoding': 'gzip, deflate',
                 'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
@@ -87,21 +87,9 @@ class TestBaseApiV20(unittest.TestCase):
             response = Mock()
             response.request = Mock()
             response.json.return_value = {
-                'data': [{'page': 1}],
-                'meta': {'pagination': {'links': {'next': 'http://foo.bar?page=2'}}}
+                'data': [{'foo': 'page_' + str(params['page'])}],
+                'meta': {'pagination': {'current_page': params['page'], 'total_pages': 3}}
             }
-
-            if 'page' in params:
-                response_pages = {
-                    '2': {
-                        'data': [{'page': 2}],
-                        'meta': {'pagination': {'links': {'next': 'http://foo.bar?page=3'}}}
-                    },
-
-                    '3': {'data': [{'page': 3}]}
-                }
-
-                response.json.return_value = response_pages[params['page']]
 
             return response
 
@@ -109,7 +97,7 @@ class TestBaseApiV20(unittest.TestCase):
 
         api = self.api_v20_base_class(base_url='gg', api_token='foo')
         combined_response = api._http_get(endpoint='foo')
-        self.assertEqual([{'page': 1}, {'page': 2}, {'page': 3}], combined_response)
+        self.assertEqual([{'foo': 'page_1'}, {'foo': 'page_2'}, {'foo': 'page_3'}], combined_response)
 
     def test_unnested_simple(self):
 
