@@ -79,8 +79,16 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         :returns: Parsed response to a HTTP GET request.
         """
 
+        if not includes:
+            includes = []
+
+        if isinstance(includes, str):
+            includes = [includes]
+
+        includes = [i for i in includes]
+
         url = join(self.base_url, endpoint)
-        params = {**self.base_params, **(params or {}), **{'include': ','.join(includes or [])}}
+        params = {**self.base_params, **(params or {}), **{'include': ','.join(sorted(includes))}}
 
         if 'page' not in params:
             params['page'] = 1
