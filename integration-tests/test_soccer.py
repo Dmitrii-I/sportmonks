@@ -21,6 +21,10 @@ logging.basicConfig(stream=stdout, level=logging.INFO)
 
 class TestSoccerApiV20:
 
+    def test_includes_param_can_be_any_iterable(self, soccer_api):
+        iterables = [['countries'], {'countries'}, ('countries',), 'countries']
+        assert all(map(lambda x: soccer_api.continent(1, iterables[0]) == soccer_api.continent(1, x), iterables[1:]))
+
     def test_continents(self, soccer_api):
         for continent in soccer_api.continents(includes=('countries',)):
             assert {'name', 'id', 'countries'} == set(continent.keys())
