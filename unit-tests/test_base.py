@@ -44,7 +44,7 @@ class TestBaseApiV20(unittest.TestCase):
         mocked_response.json.return_value = {'response': 'foo'}
         mocked_get.return_value = mocked_response
 
-        response = api._http_get(endpoint='some_endpoint', params={'param': [1, 2]}, includes=('foo', 'bar'))
+        response = api._http_get(endpoint='some_endpoint', params={'param': [1, 2]}, includes=['foo', 'bar'])
         self.assertEqual({'response': 'foo'}, response)
         mocked_get.assert_called_once_with(
             url='bar/some_endpoint',
