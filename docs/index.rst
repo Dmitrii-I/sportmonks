@@ -63,15 +63,6 @@ Features
 
 - Methods return complete data even if the underlying HTTP endpoints are paginated. Fetching all pages is arguably the most common scenario. Not having to write `for` and `while` loops to fetch additional pages results in less boilerplate code. The trade-off is that all pages are fetched even when fewer suffice.
 
-- Methods with static return values cache the HTTP responses to increase speed and reduce HTTP traffic. A return value is considered static if it is expected to remain fixed in the next hour. The following methods use caching: 
-
-    - :meth:`sportmonks.soccer.SoccerApiV2.bookmaker` 
-    - :meth:`sportmonks.soccer.SoccerApiV2.continent` 
-    - :meth:`sportmonks.soccer.SoccerApiV2.country` 
-    - :meth:`sportmonks.soccer.SoccerApiV2.league` 
-    - :meth:`sportmonks.soccer.SoccerApiV2.season` 
-
-
 
 `sportmonks.soccer` reference
 =============================
