@@ -366,7 +366,7 @@ class TestSoccerApiV20:
         known_missing_includes = {'fifaranking'}
         expected = {'name', 'twitter', 'logo_path', 'country_id', 'legacy_id', 'venue_id', 'founded', 'id',
                     'national_team', 'country'}
-        team = soccer_api.team(team_id=85, includes=tuple(includes))
+        team = soccer_api.team(team_id=85, includes=includes)
 
         missing = (expected | includes) - set(team.keys()) - known_missing_includes
         assert missing == set()
