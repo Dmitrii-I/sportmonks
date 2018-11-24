@@ -24,17 +24,6 @@ class SoccerApiV2(base.BaseApiV2):
         super().__init__(base_url='https://soccer.sportmonks.com/api/v2.0', api_token=api_token)
         log.info('Client initialized, metadata=%s' % self.meta())
 
-    @property
-    def _callables_cached_objects(self):
-        """ Returns callables of cached SportMonks soccer objects used by ``_lookup_table`` method. """
-
-        return {
-            'continent': self.continents,
-            'country': self.countries,
-            'league': self.leagues,
-            'bookmaker': self.bookmakers
-        }
-
     def meta(self):
         """ Returns meta data that includes your SportMonks plan, subscription, and available sports. """
 
@@ -50,7 +39,7 @@ class SoccerApiV2(base.BaseApiV2):
         """ Returns a bookmaker. """
 
         log.info('Fetch bookmaker (id=%s)' % bookmaker_id)
-        return self._lookup_table(sportmonks_object='bookmaker')[bookmaker_id]
+        return self._http_get(endpoint=join('bookmakers', str(bookmaker_id)))
 
     def bookmakers(self) -> List[Dict]:
         """ Returns all bookmakers. """
@@ -68,7 +57,7 @@ class SoccerApiV2(base.BaseApiV2):
         """
 
         log.info('Fetch continent (id=%s), includes=%s' % (continent_id, includes))
-        return self._lookup_table(sportmonks_object='continent', includes=includes)[continent_id]
+        return self._http_get(endpoint=join('continents', str(continent_id)), includes=includes)
 
     def continents(self, includes: tuple = None) -> Dict or List[Dict]:
         """ Returns all continents.
@@ -90,7 +79,7 @@ class SoccerApiV2(base.BaseApiV2):
         """
 
         log.info('Fetch country (id=%s), includes=%s' % (country_id, includes))
-        return self._lookup_table(sportmonks_object='country', includes=includes)[country_id]
+        return self._http_get(endpoint=join('countries', str(country_id)), includes=includes)
 
     def countries(self, includes: tuple = None) -> List[Dict]:
         """ Returns all countries.
@@ -113,7 +102,7 @@ class SoccerApiV2(base.BaseApiV2):
         """
 
         log.info('Fetch league (id=%s), includes=%s' % (league_id, includes))
-        return self._lookup_table(sportmonks_object='league', includes=includes)[league_id]
+        return self._http_get(endpoint=join('leagues', str(league_id)), includes=includes)
 
     def leagues(self, includes: tuple = None) -> List[Dict]:
         """ Returns all leagues.

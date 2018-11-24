@@ -130,37 +130,6 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         return response
 
-    @property
-    @abc.abstractmethod
-    def _callables_cached_objects(self) -> Dict:
-        pass
-
-    @functools.lru_cache(maxsize=128)
-    def _lookup_table(self, sportmonks_object: str, **kwargs) -> Dict:
-        """ Returns a lookup table for specified soccer object.
-
-        This function returns a lookup table for specified soccer object (e.g. season, league, team). This function is
-        cached: calling it with same arguments again and again returns the lookup table from cache. This avoids needless
-        HTTP requests to SportMonks.
-
-        Note: caching could lead to stale lookup tables if your script is running for days and the underlying SportMonks
-        data has changed in the meantime. Data could change because you upgraded your SportMonks plan or because
-        SportMonks added new data.
-
-        :param sportmonks_object: Soccer object recognized by the SportMonks API, like 'season', 'continent', 'team'.
-        :param includes: Soccer objects to include.
-        :raises: UnknownSportMonksObject exception.
-        :returns: A lookup object.
-        """
-
-        log.debug('Lookup %s from cache' % sportmonks_object)
-        try:
-            return {obj['id']: obj for obj in self._callables_cached_objects[sportmonks_object](**kwargs)}
-        except KeyError:
-            message = "Unable to lookup unknown soccer object `%s`" % sportmonks_object
-            log.error(message)
-            raise UnknownSportMonksObject(message)
-
 
 class ApiKeyMissingError(Exception):
     pass
