@@ -188,23 +188,3 @@ class TestBaseApiV20(unittest.TestCase):
         }
         api = self.api_v20_base_class(base_url='foo', api_token='bar')
         self.assertEqual(api._unnested(outer), expected)
-
-    def test_lookup_table(self):
-
-        class ApiV2(base.BaseApiV2):
-
-            @property
-            def _callables_cached_objects(self):
-                return {
-                    'foo': lambda **kwargs: [{'id': ','.join(sorted([kwargs[k] for k in kwargs]))}],
-                    'bar': lambda **kwargs:  [{'id': '-'.join(sorted([kwargs[k] for k in kwargs]))}]
-                }
-
-        api = ApiV2(base_url='http://foo', api_token='bar')
-        expected_foo = {'a,b,c': {'id': 'a,b,c'}}
-        expected_bar = {'a-b-c': {'id': 'a-b-c'}}
-
-        self.assertEqual(expected_foo, api._lookup_table(sportmonks_object='foo', a='a', c='c', b='b'))
-        self.assertEqual(expected_bar, api._lookup_table(sportmonks_object='bar', a='a', c='c', b='b'))
-
-        self.assertRaises(base.UnknownSportMonksObject, api._lookup_table, 'foobar')
