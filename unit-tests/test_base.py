@@ -48,13 +48,53 @@ class TestBaseApiV20(unittest.TestCase):
         self.assertEqual({'response': 'foo'}, response)
         mocked_get.assert_called_once_with(
             url='bar/some_endpoint',
-            params={'api_token': 'foo', 'tz': 'UTC', 'param': '1,2', 'include': 'foo,bar', 'page': 1},
+            params={'api_token': 'foo', 'tz': 'UTC', 'param': '1,2', 'include': 'bar,foo', 'page': 1},
             headers={
                 'Accept-Encoding': 'gzip, deflate',
                 'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
             }
         )
         self.assertEqual(1, api.http_requests_made)
+
+    @patch('requests.get')
+    def test_http_get_works_wtih_includes_being_any_iterable(self, mocked_get):
+        api = self.api_v20_base_class(base_url='bar', api_token='foo', tz_name='UTC')
+
+        includes_iterables = [
+            ('foo', 'bar'),
+            {'foo', 'bar'},
+            ['foo', 'bar'],
+            'foobar'
+        ]
+
+        for includes in includes_iterables:
+
+
+
+            mocked_response = Mock()
+            mocked_response.json.return_value = {'response': 'foo'}
+            mocked_get.return_value = mocked_response
+
+            response = api._http_get(endpoint='some_endpoint', params={'param': [1, 2]}, includes=includes)
+            self.assertEqual({'response': 'foo'}, response)
+            mocked_get.assert_called_with(
+                url='bar/some_endpoint',
+                params={
+                    'api_token': 'foo',
+                    'tz': 'UTC',
+                    'param': '1,2',
+                    'include': ','.join(
+                        sorted([i for i in (includes if not isinstance(includes, str) else [includes])])
+                    ),
+                    'page': 1
+                },
+                headers={
+                    'Accept-Encoding': 'gzip, deflate',
+                    'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
+                }
+            )
+
+        self.assertEqual(len(includes_iterables), api.http_requests_made)
 
     @patch('requests.get', new=lambda: 'response')
     def test_http_get_raises_type_error(self):
