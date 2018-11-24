@@ -1,13 +1,11 @@
 
 import requests
 import abc
-import functools
 import pytz
 import tzlocal
 from os.path import join
 from logging import getLogger
-from urllib.parse import urlsplit, parse_qs
-from typing import Dict, List
+from typing import Dict, List, Iterable
 from sportmonks import __version__
 
 log = getLogger(__name__)
@@ -72,7 +70,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         return unnested
 
-    def _http_get(self, endpoint: str, params: dict = None, includes: tuple = None) -> Dict or List[Dict]:
+    def _http_get(self, endpoint: str, params: dict = None, includes: Iterable = None) -> Dict or List[Dict]:
         """ Returns parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
 
         :param endpoint: Endpoint where to send the GET request to.

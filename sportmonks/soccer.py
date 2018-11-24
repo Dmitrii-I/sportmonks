@@ -5,7 +5,7 @@
 
 from os.path import join
 from logging import getLogger
-from typing import Dict, List
+from typing import Dict, List, Iterable
 from datetime import date
 from sportmonks import base
 from requests import get
@@ -49,7 +49,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s bookmakers' % len(bookmakers))
         return bookmakers
 
-    def continent(self, continent_id: int, includes: tuple = None) -> Dict:
+    def continent(self, continent_id: int, includes: Iterable=None) -> Dict:
         """ Returns a continent.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 10.
@@ -59,7 +59,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch continent (id=%s), includes=%s' % (continent_id, includes))
         return self._http_get(endpoint=join('continents', str(continent_id)), includes=includes)
 
-    def continents(self, includes: tuple = None) -> Dict or List[Dict]:
+    def continents(self, includes: Iterable=None) -> Dict or List[Dict]:
         """ Returns all continents.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 10.
@@ -71,7 +71,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s continents' % len(continents))
         return continents
 
-    def country(self, country_id: int, includes: tuple = None) -> Dict:
+    def country(self, country_id: int, includes: Iterable=None) -> Dict:
         """ Returns a country.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -81,7 +81,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch country (id=%s), includes=%s' % (country_id, includes))
         return self._http_get(endpoint=join('countries', str(country_id)), includes=includes)
 
-    def countries(self, includes: tuple = None) -> List[Dict]:
+    def countries(self, includes: Iterable=None) -> List[Dict]:
         """ Returns all countries.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -93,7 +93,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s countries' % len(countries))
         return countries
 
-    def league(self, league_id: int, includes: tuple = None) -> Dict:
+    def league(self, league_id: int, includes: Iterable=None) -> Dict:
         """ Returns a league.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -104,7 +104,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch league (id=%s), includes=%s' % (league_id, includes))
         return self._http_get(endpoint=join('leagues', str(league_id)), includes=includes)
 
-    def leagues(self, includes: tuple = None) -> List[Dict]:
+    def leagues(self, includes: Iterable=None) -> List[Dict]:
         """ Returns all leagues.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -117,7 +117,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s leagues' % len(leagues))
         return leagues
 
-    def season(self, season_id: int, includes: tuple = None) -> Dict:
+    def season(self, season_id: int, includes: Iterable=None) -> Dict:
         """ Returns a season.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 10.
@@ -127,7 +127,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch season (id=%s), includes=%s' % (season_id, includes))
         return self._http_get(endpoint=join('seasons', str(season_id)), includes=includes)
 
-    def seasons(self, includes: tuple = None) -> List[Dict]:
+    def seasons(self, includes: Iterable=None) -> List[Dict]:
         """ Returns all seasons.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -139,7 +139,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s seasons' % len(seasons))
         return seasons
 
-    def season_results(self, season_id: int, includes: tuple = tuple()) -> List[Dict]:
+    def season_results(self, season_id: int, includes: Iterable=None) -> List[Dict]:
         """ Returns completed fixtures of a season.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 1.
@@ -149,14 +149,14 @@ class SoccerApiV2(base.BaseApiV2):
         `trends`.
         """
 
-        includes = ('results',) + tuple(['results.' + inc for inc in includes])
+        includes = ['results'] + ['results.' + inc for inc in includes or []]
         log.info("Fetch results of a season (id=%s), includes=%s" % (season_id, includes))
         season_results = self.season(season_id=season_id, includes=includes)['results']
         log.info('Fetched %s results' % len(season_results))
         return season_results
 
     def fixtures(self, start_date: date, end_date: date, league_ids: List[int] = None,
-                 includes: tuple = None) -> List[Dict]:
+                 includes: Iterable=None) -> List[Dict]:
         """ Returns fixtures between ``start_date`` and ``end_date``. The dates are inclusive.
 
         Parameter ``league_ids`` specifies leagues from which the fixtures will be returned, defaulting to all leagues.
@@ -175,7 +175,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s fixtures' % len(fixtures))
         return fixtures
 
-    def fixture(self, fixture_id: int, includes: tuple = None) -> Dict:
+    def fixture(self, fixture_id: int, includes: Iterable=None) -> Dict:
         """ Returns a fixture.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 10.
@@ -188,7 +188,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch fixture (id=%s), includes=%s' % (fixture_id, includes))
         return self._http_get(endpoint=join('fixtures', str(fixture_id)), includes=includes)
 
-    def team_fixtures(self, start_date: date, end_date: date, team_id: int, includes: tuple = None) -> List[Dict]:
+    def team_fixtures(self, start_date: date, end_date: date, team_id: int, includes: Iterable=None) -> List[Dict]:
         """ Returns fixtures between ``start_date`` and ``end_date`` for a team specified by ``team_id``.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 3.
@@ -206,7 +206,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s team fixtures' % len(team_fixtures))
         return team_fixtures
 
-    def fixtures_today(self, league_ids: List[int] = None, includes: tuple = None) -> List[Dict]:
+    def fixtures_today(self, league_ids: List[int] = None, includes: Iterable=None) -> List[Dict]:
         """ Returns today's fixtures, played and to be played.
 
         Parameter ``league_ids`` specifies leagues from which the fixtures will be returned, defaulting to all leagues.
@@ -223,7 +223,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s fixtures' % len(fixtures_today))
         return fixtures_today
 
-    def fixtures_in_play(self, includes: tuple = None) -> List[Dict]:
+    def fixtures_in_play(self, includes: Iterable=None) -> List[Dict]:
         """ Returns in-play fixtures. Note that in-play is defined by SportMonks as fixtures currently played,
         plus fixtures that will begin within 45 minutes, and fixtures that ended less than 30 minutes ago.
 
@@ -239,7 +239,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s fixtures in play' % len(fixtures_in_play))
         return fixtures_in_play
 
-    def head_to_head_fixtures(self, team_ids: set, includes: tuple = None) -> List[Dict]:
+    def head_to_head_fixtures(self, team_ids: set, includes: Iterable=None) -> List[Dict]:
         """ Returns all head-to-head fixtures of two teams specified by ``team_ids``.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -265,7 +265,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s commentaries' % len(commentaries))
         return commentaries
 
-    def video_highlights(self, fixture_id: int = None, includes: tuple = None) -> List[Dict]:
+    def video_highlights(self, fixture_id: int = None, includes: Iterable=None) -> List[Dict]:
         """ Returns links to video highlights of all fixtures or of a fixture specified by ``fixture_id``.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -284,7 +284,8 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s video highlights' % len(video_highlights))
         return video_highlights
 
-    def standings(self, season_id: int, live: bool = False, group_id: int=None, includes: tuple = None) -> List[Dict]:
+    def standings(self, season_id: int, live: bool = False, group_id: int=None, 
+                  includes: Iterable=None) -> List[Dict]:
         """ Returns standings of a season.
 
         Parameter ``live`` specifies whether standings should also take into account in-play fixtures.
@@ -307,7 +308,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s standings' % len(standings))
         return standings
 
-    def teams(self, season_id: int, includes: tuple = None) -> List[Dict]:
+    def teams(self, season_id: int, includes: Iterable=None) -> List[Dict]:
         """ Returns all teams that played during a season.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 3.
@@ -320,7 +321,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s teams' % len(teams))
         return teams
 
-    def team(self, team_id: int, includes: tuple=None) -> Dict:
+    def team(self, team_id: int, includes: Iterable=None) -> Dict:
         """ Returns a team.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 3.
@@ -335,9 +336,9 @@ class SoccerApiV2(base.BaseApiV2):
         """ Returns stats of a team. """
 
         log.info('Fetch stats of a team (id=%s)' % team_id)
-        return self._http_get(endpoint=join('teams', str(team_id)), includes=('stats',))['stats']
+        return self._http_get(endpoint=join('teams', str(team_id)), includes=['stats'])['stats']
 
-    def top_scorers(self, season_id: int, includes: tuple=None) -> Dict:
+    def top_scorers(self, season_id: int, includes: Iterable=None) -> Dict:
         """ Returns top scorers of a season. Three types of top scorers are returned: most goals, most assists, and most
         cards.
 
@@ -356,7 +357,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch venue (id=%s)' % venue_id)
         return self._http_get(endpoint=join('venues', str(venue_id)))
 
-    def rounds(self, season_id: int, includes: tuple=None) -> List[Dict]:
+    def rounds(self, season_id: int, includes: Iterable=None) -> List[Dict]:
         """ Returns rounds of a season.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -368,7 +369,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s rounds' % len(rounds))
         return rounds
 
-    def round(self, round_id: int, includes: tuple=None) -> Dict:
+    def round(self, round_id: int, includes: Iterable=None) -> Dict:
         """ Returns a round.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -400,7 +401,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch player, id=%s' % player_id)
         return self._http_get(endpoint=join('players', str(player_id)))
 
-    def squad(self, season_id: int, team_id: int, includes: tuple=None) -> List[Dict]:
+    def squad(self, season_id: int, team_id: int, includes: Iterable=None) -> List[Dict]:
         """ Returns a squad. A squad is a set of players that played for a team during a season.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 3.
@@ -413,7 +414,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetched %s squad players' % len(squad))
         return squad
 
-    def stage(self, stage_id: int, includes: tuple=None) -> Dict:
+    def stage(self, stage_id: int, includes: Iterable=None) -> Dict:
         """ Returns a stage.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
@@ -423,7 +424,7 @@ class SoccerApiV2(base.BaseApiV2):
         log.info('Fetch stage (id=%s), includes=%s' % (stage_id, includes))
         return self._http_get(endpoint=join('stages', str(stage_id)), includes=includes)
 
-    def season_stages(self, season_id: int, includes: tuple=None) -> List[Dict]:
+    def season_stages(self, season_id: int, includes: Iterable=None) -> List[Dict]:
         """ Returns stages of a season.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
