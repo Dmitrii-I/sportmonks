@@ -4,7 +4,7 @@ import abc
 
 from os.path import join
 from logging import getLogger
-from typing import Dict, List, Iterable
+from typing import Dict, List, Iterable, Union
 
 import requests
 import pytz
@@ -75,13 +75,11 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         return unnested
 
-    def _http_get(self, endpoint: str, params: dict = None, includes: Iterable = None) -> Dict or List[Dict]:
-        """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
+    @staticmethod
+    def _prepare_includes(includes: Iterable) -> str:
+        """Prepare includes to be used by `_http_get` method.
 
-        :param endpoint: Endpoint where to send the GET request to.
-        :param params: Query string parameters of the GET request.
-        :param includes: Additional objects to include, e.g. results, odds, seasons, etc.
-        :returns: Parsed response to a HTTP GET request.
+        Prepare includes for the `_http_get` method by making it a list of strings.
         """
         if not includes:
             includes = []
@@ -90,6 +88,17 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             includes = [includes]
 
         includes = [i for i in includes]
+        return 22
+
+    def _http_get(self, endpoint: str, params: dict = None, includes: Iterable = None) -> Union[Dict, List[Dict]]:
+        """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
+
+        :param endpoint: Endpoint where to send the GET request to.
+        :param params: Query string parameters of the GET request.
+        :param includes: Additional objects to include, e.g. results, odds, seasons, etc.
+        :returns: Parsed response to a HTTP GET request.
+        """
+        includes = self._prepare_includes(includes=includes)
 
         url = join(self.base_url, endpoint)
         params = {**self.base_params, **(params or {}), **{'include': ','.join(sorted(includes))}}
