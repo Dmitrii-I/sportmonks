@@ -1,19 +1,25 @@
+"""Base module to be used by other sportmonks modules."""
 
-import requests
 import abc
-import pytz
-import tzlocal
+
 from os.path import join
 from logging import getLogger
 from typing import Dict, List, Iterable
+
+import requests
+import pytz
+import tzlocal
+
 from sportmonks import __version__
 
 log = getLogger(__name__)
 
 
 class BaseApiV2(metaclass=abc.ABCMeta):
-    def __init__(self, base_url: str, api_token: str, tz_name: str=None) -> None:
+    """Base API class."""
 
+    def __init__(self, base_url: str, api_token: str, tz_name: str = None) -> None:
+        """Initialize API client."""
         self.base_url = base_url
         if not self.base_url:
             raise BaseUrlMissingError('Base URL must be provided!')
@@ -35,7 +41,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         }
 
     def _unnested(self, dictionary: dict) -> Dict:
-        """ Returns dictionary with unnested data.
+        """Return dictionary with unnested data.
 
         SportMonks API responses contain data in the arguably redundant key `data`. This method walks through the
         dictionary and unnests all data keys, recursively. For example, `{'country_ids': {'data': [1, 2, 3]}}` is
@@ -45,7 +51,6 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         :returns: Unnested dictionary.
         :raises: IncompatibleDictionarySchema
         """
-
         log.debug('Unnest dictionary')
         unnested = dict()
 
@@ -71,14 +76,13 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         return unnested
 
     def _http_get(self, endpoint: str, params: dict = None, includes: Iterable = None) -> Dict or List[Dict]:
-        """ Returns parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
+        """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
 
         :param endpoint: Endpoint where to send the GET request to.
         :param params: Query string parameters of the GET request.
         :param includes: Additional objects to include, e.g. results, odds, seasons, etc.
         :returns: Parsed response to a HTTP GET request.
         """
-
         if not includes:
             includes = []
 
@@ -98,24 +102,24 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             if isinstance(params[k], list):
                 params[k] = ','.join(str(el) for el in params[k])
 
-        log.debug('GET %s, params: %s' %
-                 (url, {k: v if k != 'api_token' else 'API_TOKEN_REDACTED' for k, v in params.items()}))
+        log.debug('GET %s, params: %s', url,
+                  {k: v if k != 'api_token' else 'API_TOKEN_REDACTED' for k, v in params.items()})
         self.http_requests_made += 1
         raw_response = requests.get(url=url, params=params, headers=self.base_headers)
-        log.debug('GET succeeded of the complete url: %s' %
-                 raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
+        log.debug('GET succeeded of the complete url: %s',
+                  raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
         response = raw_response.json()
 
         if 'error' in response:
-            log.error('Error: %s' % response['error']['message'])
+            log.error('Error: %s', response['error']['message'])
             raise SportMonksAPIError(response['error']['message'])
 
         if ('meta' in response
                 and 'pagination' in response['meta']
                 and response['meta']['pagination']['current_page'] < response['meta']['pagination']['total_pages']
                 and response['meta']['pagination']['current_page'] == 1):
-            log.debug('Response is paginated: %s pages' % response['meta']['pagination']['total_pages'])
-            log.debug('Request pages 2 through %s' % response['meta']['pagination']['total_pages'])
+            log.debug('Response is paginated: %s pages', response['meta']['pagination']['total_pages'])
+            log.debug('Request pages 2 through %s', response['meta']['pagination']['total_pages'])
 
             for page_number in range(2, response['meta']['pagination']['total_pages'] + 1):
                 params['page'] = page_number
@@ -138,20 +142,24 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
 
 class ApiKeyMissingError(Exception):
+    """Raised when API key is not provided."""
+
     pass
 
 
 class BaseUrlMissingError(Exception):
+    """Raised when base url is not provided."""
+
     pass
 
 
 class SportMonksAPIError(Exception):
+    """Raised when SportMonks returns an API error."""
+
     pass
 
 
 class IncompatibleDictionarySchema(Exception):
-    pass
+    """Raised when a dictionary cannot be unnested."""
 
-
-class UnknownSportMonksObject(Exception):
     pass

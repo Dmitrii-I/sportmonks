@@ -1,29 +1,35 @@
+"""Configure package installation and distribution."""
 
 import sys
 import os.path
+
+from shutil import rmtree
+
 from setuptools import find_packages, setup, Command
 from sportmonks import __version__
-from shutil import rmtree
 
 
 class UploadCommand(Command):
-    """ Shamelessly copied from Kenneth Reitz. """
+    """Upload command, shamelessly copied from Kenneth Reitz."""
 
     description = 'Build and publish the package.'
     user_options = []
 
     @staticmethod
     def status(s):
-        """Prints things in bold."""
+        """Print things in bold."""
         print('\033[1m{0}\033[0m'.format(s))
 
     def initialize_options(self):
+        """Initialize options."""
         pass
 
     def finalize_options(self):
+        """Finalize options."""
         pass
 
     def run(self):
+        """Run when `upload` command is invoked."""
         try:
             self.status('Removing previous builds…')
             rmtree(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'dist'))

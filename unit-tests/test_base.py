@@ -1,44 +1,45 @@
-""" This module contains unit tests for the `base` module. """
+"""Unit tests of the `base` module."""
 
 import unittest
+
 from unittest.mock import Mock, patch
-from sportmonks import __version__
+
 import pytz
 import tzlocal
-import sportmonks.base as base
+
+from sportmonks import __version__
+from sportmonks.base import BaseApiV2, SportMonksAPIError, BaseUrlMissingError, ApiKeyMissingError
 
 
 class TestBaseApiV20(unittest.TestCase):
+    """Class with unit tests of `BaseApiV2` methods."""
 
     def setUp(self):
-
-        class BaseApiV2WithoutAbstractMethods(base.BaseApiV2):
-            """ A subclass of `base.BaseApiV20` with overridden abstract methods allowing instantiation. """
-            @property
-            def _callables_cached_objects(self):
-                raise NotImplementedError()
-
-        self.api_v20_base_class = BaseApiV2WithoutAbstractMethods
+        """Set up tests."""
+        pass
 
     def test_init_raises_exceptions(self):
-        self.assertRaises(base.BaseUrlMissingError, self.api_v20_base_class, base_url=None, api_token='foo')
-        self.assertRaises(base.ApiKeyMissingError, self.api_v20_base_class, base_url='foo', api_token=None)
+        """Test that `__init__` raises excepions when base url or API key are missing."""
+        self.assertRaises(BaseUrlMissingError, BaseApiV2, base_url=None, api_token='foo')
+        self.assertRaises(ApiKeyMissingError, BaseApiV2, base_url='foo', api_token=None)
 
-    def test_init_sets_timezone_correctly(self):
-
-        api = self.api_v20_base_class(base_url='http://www.foo.com', api_token='foo',tz_name='Europe/Amsterdam')
+    def test_init_sets_timezone(self):
+        """Test that `__init__` sets timezone."""
+        api = BaseApiV2(base_url='http://www.foo.com', api_token='foo', tz_name='Europe/Amsterdam')
         self.assertEqual(pytz.timezone('Europe/Amsterdam'), api.timezone)
 
-        api = self.api_v20_base_class(base_url='http://www.foo.com', api_token='foo')
+        api = BaseApiV2(base_url='http://www.foo.com', api_token='foo')
         self.assertEqual(tzlocal.get_localzone(), api.timezone)
 
     def test_init_sets_base_params(self):
-        api = self.api_v20_base_class(base_url='foo', api_token='bar', tz_name='Australia/Sydney')
+        """Test that `__init__` sets base params."""
+        api = BaseApiV2(base_url='foo', api_token='bar', tz_name='Australia/Sydney')
         self.assertEqual({'api_token': 'bar', 'tz': 'Australia/Sydney'}, api.base_params)
 
     @patch('requests.get')
     def test_http_get_args_building(self, mocked_get):
-        api = self.api_v20_base_class(base_url='bar', api_token='foo', tz_name='UTC')
+        """Test that `_http_get` builds the arguments."""
+        api = BaseApiV2(base_url='bar', api_token='foo', tz_name='UTC')
 
         mocked_response = Mock()
         mocked_response.json.return_value = {'response': 'foo'}
@@ -58,7 +59,8 @@ class TestBaseApiV20(unittest.TestCase):
 
     @patch('requests.get')
     def test_http_get_works_wtih_includes_being_any_iterable(self, mocked_get):
-        api = self.api_v20_base_class(base_url='bar', api_token='foo', tz_name='UTC')
+        """Test that `_http_get` works with `includes` parameters being any iterable."""
+        api = BaseApiV2(base_url='bar', api_token='foo', tz_name='UTC')
 
         includes_iterables = [
             ('foo', 'bar'),
@@ -69,7 +71,8 @@ class TestBaseApiV20(unittest.TestCase):
 
         for includes in includes_iterables:
 
-
+            if isinstance(includes, str):
+                includes = [includes]
 
             mocked_response = Mock()
             mocked_response.json.return_value = {'response': 'foo'}
@@ -84,7 +87,7 @@ class TestBaseApiV20(unittest.TestCase):
                     'tz': 'UTC',
                     'param': '1,2',
                     'include': ','.join(
-                        sorted([i for i in (includes if not isinstance(includes, str) else [includes])])
+                        sorted([i for i in includes])
                     ),
                     'page': 1
                 },
@@ -98,31 +101,34 @@ class TestBaseApiV20(unittest.TestCase):
 
     @patch('requests.get', new=lambda: 'response')
     def test_http_get_raises_type_error(self):
-        api = self.api_v20_base_class(base_url='foo', api_token='bar')
-        self.assertRaises(TypeError, base.BaseApiV2._http_get, api, endpoint='foo')
+        """Test that `_http_get` raises TypeError."""
+        api = BaseApiV2(base_url='foo', api_token='bar')
+        self.assertRaises(TypeError, BaseApiV2._http_get, api, endpoint='foo')
 
     @patch('sportmonks.base.log', new=Mock())
     @patch('requests.get')
     def test_http_get_raises_sportmonks_api_error(self, mocked_get):
+        """Test that `_http_get` raises SportMonksAPIError."""
         mocked_response = Mock()
         mocked_response.json.return_value = {'error': {'message': 'foo'}}
         mocked_get.return_value = mocked_response
 
-        api = self.api_v20_base_class(base_url='foo', api_token='bar')
-        self.assertRaises(base.SportMonksAPIError, api._http_get, endpoint='foo')
+        api = BaseApiV2(base_url='foo', api_token='bar')
+        self.assertRaises(SportMonksAPIError, api._http_get, endpoint='foo')
 
     @patch('requests.get')
     def test_http_get_unnests_data(self, mocked_get):
+        """Test that `_http_get unnests data."""
         mocked_response = Mock()
         mocked_response.json.return_value = {'data': {'foo': 'bar'}}
         mocked_get.return_value = mocked_response
 
-        api = self.api_v20_base_class(base_url='foo', api_token='bar')
+        api = BaseApiV2(base_url='foo', api_token='bar')
         self.assertEqual({'foo': 'bar'}, api._http_get(endpoint='foo'))
 
     @patch('requests.get')
     def test_http_get_requests_all_pages(self, mocked_requests_get):
-
+        """Test that `_http_get` requests all pages."""
         def mocked_response(url, params, headers):
             response = Mock()
             response.request = Mock()
@@ -135,12 +141,12 @@ class TestBaseApiV20(unittest.TestCase):
 
         mocked_requests_get.side_effect = mocked_response
 
-        api = self.api_v20_base_class(base_url='gg', api_token='foo')
+        api = BaseApiV2(base_url='gg', api_token='foo')
         combined_response = api._http_get(endpoint='foo')
         self.assertEqual([{'foo': 'page_1'}, {'foo': 'page_2'}, {'foo': 'page_3'}], combined_response)
 
     def test_unnested_simple(self):
-
+        """Test `_unnest` with a simple case."""
         nested = {
             'a': 1,
             'b': [1, 2, 3],
@@ -155,11 +161,11 @@ class TestBaseApiV20(unittest.TestCase):
             'd': [1, 2, 3]
         }
 
-        api = self.api_v20_base_class(base_url='foo', api_token='bar')
+        api = BaseApiV2(base_url='foo', api_token='bar')
         self.assertEqual(api._unnested(nested), expected)
 
     def test_unnested_complex(self):
-
+        """Test `_unnest` with a complex case."""
         inner = {
             'p': 1,
             'q': [1, 2, 3],
@@ -186,11 +192,11 @@ class TestBaseApiV20(unittest.TestCase):
             }
         }
 
-        api = self.api_v20_base_class(base_url='foo', api_token='bar')
+        api = BaseApiV2(base_url='foo', api_token='bar')
         self.assertEqual(api._unnested(outer), expected)
 
     def test_unnested_super_complex(self):
-
+        """Test `_unnest` with a super complex case."""
         inner_inner = [
             {'a': 1, 'b': {'data': {'c': 'foo'}}},
             {'a': 2, 'b': {'data': {'c': 'bar'}}},
@@ -226,5 +232,5 @@ class TestBaseApiV20(unittest.TestCase):
                 }
             }
         }
-        api = self.api_v20_base_class(base_url='foo', api_token='bar')
+        api = BaseApiV2(base_url='foo', api_token='bar')
         self.assertEqual(api._unnested(outer), expected)
