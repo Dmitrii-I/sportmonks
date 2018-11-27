@@ -88,7 +88,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             includes = [includes]
 
         includes = [i for i in includes]
-        return 22
+        return includes
 
     def _http_get(self, endpoint: str, params: dict = None, includes: Iterable = None) -> Union[Dict, List[Dict]]:
         """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
