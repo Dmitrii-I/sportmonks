@@ -11,7 +11,7 @@ import pytz
 import tzlocal
 
 from sportmonks import __version__
-from sportmonks.types import Response
+from sportmonks._types import Response
 
 log = getLogger(__name__)
 
