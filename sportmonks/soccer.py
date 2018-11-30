@@ -9,7 +9,7 @@ from logging import getLogger
 from typing import Dict, List, Iterable
 from datetime import date
 from requests import get
-from sportmonks import base
+from sportmonks import _base
 
 
 log = getLogger(__name__)
