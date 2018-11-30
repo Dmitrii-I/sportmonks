@@ -13,7 +13,7 @@ from sys import stdout
 from datetime import date
 from collections import defaultdict
 import logging
-import sportmonks.base
+import sportmonks._base
 
 
 logging.basicConfig(stream=stdout, level=logging.INFO)
@@ -371,7 +371,7 @@ def test_standings(soccer_api):
 
     try:
         standings = soccer_api.standings(season_id=6361, live=True, includes=includes)
-    except sportmonks.base.SportMonksAPIError as e:
+    except sportmonks._base.SportMonksAPIError as e:
         if str(e) == "Insufficient Privileges! Your current plan doesn't allow access to this section!":
             return
         raise
@@ -489,7 +489,7 @@ def test_in_play_odds(soccer_api):
     """Test `in_play_odds` method."""
     try:
         odds = soccer_api.in_play_odds(fixture_id=1625164)
-    except sportmonks.base.SportMonksAPIError as e:
+    except sportmonks._base.SportMonksAPIError as e:
         if str(e) == "Insufficient Privileges! Your current plan doesn't allow access to this section!":
             return
         raise
@@ -593,7 +593,7 @@ def test_coach(soccer_api):
     """Test `coach` method."""
     try:
         coach = soccer_api.coach(coach_id=523962)
-    except sportmonks.base.SportMonksAPIError as e:
+    except sportmonks._base.SportMonksAPIError as e:
         if str(e) == "Insufficient Privileges! Your current plan doesn't allow access to this section!":
             return
         raise
