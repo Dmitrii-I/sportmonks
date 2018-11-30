@@ -15,7 +15,7 @@ from sportmonks import _base
 log = getLogger(__name__)
 
 
-class SoccerApiV2(base.BaseApiV2):
+class SoccerApiV2(_base.BaseApiV2):
     """The ``SoccerApiV2`` class provides SportMonks soccer API client."""
 
     def __init__(self, api_token: str):
