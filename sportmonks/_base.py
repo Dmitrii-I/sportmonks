@@ -4,13 +4,14 @@ import abc
 
 from os.path import join
 from logging import getLogger
-from typing import Dict, List, Iterable, Union
+from typing import Dict, List, Iterable, Optional, Any, Union
 
 import requests
 import pytz
 import tzlocal
 
 from sportmonks import __version__
+from sportmonks.types import Response
 
 log = getLogger(__name__)
 
@@ -18,7 +19,7 @@ log = getLogger(__name__)
 class BaseApiV2(metaclass=abc.ABCMeta):
     """Base API class."""
 
-    def __init__(self, base_url: str, api_token: str, tz_name: str = None) -> None:
+    def __init__(self, base_url: str, api_token: str, tz_name: Optional[str] = None) -> None:
         """Initialize API client."""
         self.base_url = base_url
         if not self.base_url:
@@ -40,7 +41,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
         }
 
-    def _unnested(self, dictionary: dict) -> Dict:
+    def _unnested(self, dictionary: Dict[Any, Any]) -> Dict[Any, Any]:
         """Return dictionary with unnested data.
 
         SportMonks API responses contain data in the arguably redundant key `data`. This method walks through the
@@ -76,7 +77,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         return unnested
 
     @staticmethod
-    def _prepare_includes(includes: Iterable) -> str:
+    def _prepare_includes(includes: Optional[Iterable[str]]) -> str:
         """Prepare includes to be used by `_http_get` method.
 
         Prepare includes for the `_http_get` method by making it a list of strings.
@@ -88,9 +89,10 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             includes = [includes]
 
         includes = [i for i in includes]
-        return includes
+        return ','.join(sorted(includes))
 
-    def _http_get(self, endpoint: str, params: dict = None, includes: Iterable = None) -> Union[Dict, List[Dict]]:
+    def _http_get(self, endpoint: str, params: Optional[Dict[str, Any]] = None,
+                  includes: Optional[Iterable[str]] = None) -> Response:
         """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
 
         :param endpoint: Endpoint where to send the GET request to.
@@ -101,7 +103,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         includes = self._prepare_includes(includes=includes)
 
         url = join(self.base_url, endpoint)
-        params = {**self.base_params, **(params or {}), **{'include': ','.join(sorted(includes))}}
+        params = {**self.base_params, **(params or {}), **{'include': includes}}
 
         if 'page' not in params:
             params['page'] = 1
@@ -115,8 +117,9 @@ class BaseApiV2(metaclass=abc.ABCMeta):
                   {k: v if k != 'api_token' else 'API_TOKEN_REDACTED' for k, v in params.items()})
         self.http_requests_made += 1
         raw_response = requests.get(url=url, params=params, headers=self.base_headers)
-        log.debug('GET succeeded of the complete url: %s',
-                  raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
+        if raw_response.request.url:
+            log.debug('GET succeeded of the complete url: %s',
+                      raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
         response = raw_response.json()
 
         if 'error' in response:
