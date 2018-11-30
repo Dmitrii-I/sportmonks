@@ -9,4 +9,4 @@ install:
 script:
   - bash run-unit-tests.sh
   - bash run-integration-tests.sh
-
+  - bash run-static-code-checks.sh
