@@ -8,7 +8,7 @@ import pytz
 import tzlocal
 
 from sportmonks import __version__
-from sportmonks.base import BaseApiV2, SportMonksAPIError, BaseUrlMissingError, ApiKeyMissingError
+from sportmonks._base import BaseApiV2, SportMonksAPIError, BaseUrlMissingError, ApiKeyMissingError
 
 
 class TestBaseApiV20(unittest.TestCase):
@@ -105,7 +105,7 @@ class TestBaseApiV20(unittest.TestCase):
         api = BaseApiV2(base_url='foo', api_token='bar')
         self.assertRaises(TypeError, BaseApiV2._http_get, api, endpoint='foo')
 
-    @patch('sportmonks.base.log', new=Mock())
+    @patch('sportmonks._base.log', new=Mock())
     @patch('requests.get')
     def test_http_get_raises_sportmonks_api_error(self, mocked_get):
         """Test that `_http_get` raises SportMonksAPIError."""
