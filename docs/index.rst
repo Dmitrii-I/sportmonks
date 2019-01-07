@@ -69,5 +69,6 @@ Features
 
 .. automodule:: sportmonks.soccer
     :members:
+    :inherited-members:
     :undoc-members:
 
