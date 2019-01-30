@@ -68,7 +68,29 @@ Features
 =============================
 
 .. automodule:: sportmonks.soccer
-    :members:
-    :inherited-members:
-    :undoc-members:
+
+    .. autoclass:: SoccerApiV2
+        :members:
+        :inherited-members:
+        :undoc-members:
+        :show-inheritance:
+
+        .. Inherited instance variables are not documented by autodoc.
+           Bug: https://github.com/sphinx-doc/sphinx/issues/741. Therefore we have to document them manually.
+
+        .. attribute:: http_requests_made
+
+            Number of HTTP requests made.
+
+        .. attribute:: base_url
+
+            Base URL of the endpoint the client connects to.
+
+        .. attribute:: api_token
+
+            API token the client uses to authenticate with SportMonks.com servers.
+
+        .. attribute:: tz_name
+
+            Name of the timezone the returned datetimes will have.
 
