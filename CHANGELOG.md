@@ -7,6 +7,7 @@
 * Parameter `include` has been renamed to `includes`. This name is better because it can contain zero or more includes, not zero or one.
 * Accept any iterable in the `includes` parameter, not just tuples. Lists, sets, and other iterables with a `__getitem__` magic method will work. Strings, even though iterables, are converted to a one-element list. This allows also to pass single include lazily as `includes='continent'`, instead of `includes=['continent']`. In fact this could also be considered as a bug fix, because in previous versions the strings were accepted too, but were passed as single character includes and SportMonks API was not raising any error.
 * Remove API token from logs for better security. Note, that the API token will still appear unedited in logs of `requests` and `urllib3` packages.
+* The API client attributes `base_params` and `base_headers` are now private (i.e. renamed to `_base_params` and `_base_headers`.
 
 ## 0.1.2 (2018-08-26)
 * Fix bug in `SoccerApiV2.season_results()` default value. Default value must an empty tuple not `None`.
