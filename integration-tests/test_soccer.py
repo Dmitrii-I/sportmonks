@@ -77,7 +77,7 @@ def test_leagues(soccer_api):
     """Test `leagues` method."""
     leagues = soccer_api.leagues(includes=('country', 'season', 'seasons'))
     expected = {'country_id', 'coverage', 'current_round_id', 'current_season_id', 'current_stage_id', 'id',
-                'is_cup', 'legacy_id', 'live_standings', 'name', 'country', 'season', 'seasons'}
+                'is_cup', 'legacy_id', 'live_standings', 'name', 'country', 'season', 'seasons', 'logo_path'}
 
     for league in leagues:
         assert expected == set(league.keys())
@@ -89,7 +89,7 @@ def test_league(soccer_api):
     premiership = soccer_api.league(league_id=501, includes=tuple(includes))
 
     expected = {'country_id', 'coverage', 'current_round_id', 'current_season_id', 'current_stage_id', 'id',
-                'is_cup', 'legacy_id', 'live_standings', 'name'}
+                'is_cup', 'legacy_id', 'live_standings', 'name', 'logo_path'}
 
     assert expected | includes == set(premiership.keys())
 
