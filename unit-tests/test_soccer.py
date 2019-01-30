@@ -265,8 +265,8 @@ class TestSoccerApiV2(unittest.TestCase):
         """Test `meta` method."""
         api = MagicMock()()
         api.base_url = 'http://foo.bar'
-        api.base_params = 'params'
-        api.base_headers = 'headers'
+        api._base_params = 'params'
+        api._base_headers = 'headers'
 
         mocked_response = MagicMock()()
         mocked_response.json.return_value = {'meta': 'foo'}
