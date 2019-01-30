@@ -34,7 +34,7 @@ class TestBaseApiV20(unittest.TestCase):
     def test_init_sets_base_params(self):
         """Test that `__init__` sets base params."""
         api = BaseApiV2(base_url='foo', api_token='bar', tz_name='Australia/Sydney')
-        self.assertEqual({'api_token': 'bar', 'tz': 'Australia/Sydney'}, api.base_params)
+        self.assertEqual({'api_token': 'bar', 'tz': 'Australia/Sydney'}, api._base_params)
 
     @patch('requests.get')
     def test_http_get_args_building(self, mocked_get):

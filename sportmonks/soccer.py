@@ -30,7 +30,7 @@ class SoccerApiV2(_base.BaseApiV2):
         # response.
         url = join(self.base_url, 'continents')
         log.info('Fetch metadata')
-        raw_response = get(url=url, params=self.base_params, headers=self.base_headers)
+        raw_response = get(url=url, params=self._base_params, headers=self._base_headers)
         response = raw_response.json()
         return response['meta']
 

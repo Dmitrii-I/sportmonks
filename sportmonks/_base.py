@@ -35,8 +35,8 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             self.timezone = tzlocal.get_localzone()
 
         self.http_requests_made = 0
-        self.base_params = {'api_token': self.api_token, 'tz': str(self.timezone)}
-        self.base_headers = {
+        self._base_params = {'api_token': self.api_token, 'tz': str(self.timezone)}
+        self._base_headers = {
             'Accept-Encoding': 'gzip, deflate',
             'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
         }
@@ -103,7 +103,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         includes = self._prepare_includes(includes=includes)
 
         url = join(self.base_url, endpoint)
-        params = {**self.base_params, **(params or {}), **{'include': includes}}
+        params = {**self._base_params, **(params or {}), **{'include': includes}}
 
         if 'page' not in params:
             params['page'] = 1
@@ -116,7 +116,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         log.debug('GET %s, params: %s', url,
                   {k: v if k != 'api_token' else 'API_TOKEN_REDACTED' for k, v in params.items()})
         self.http_requests_made += 1
-        raw_response = requests.get(url=url, params=params, headers=self.base_headers)
+        raw_response = requests.get(url=url, params=params, headers=self._base_headers)
         if raw_response.request.url:
             log.debug('GET succeeded of the complete url: %s',
                       raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
