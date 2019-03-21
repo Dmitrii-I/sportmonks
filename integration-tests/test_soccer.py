@@ -46,7 +46,8 @@ def test_countries(soccer_api):
 
         # Following countries have no continent associated with them:
         countries_without_continent = {99474, 190324, 1442002, 1884978, 3499960, 8151924, 11311331,
-                                       12444275, 14534056, 14566098, 14566636, 15288356, 15629849, 25293454}
+                                       12444275, 14534056, 14566098, 14566636, 15288356, 15629849, 25293454, 32396817,
+                                       32533155}
 
         expected = {'name', 'id', 'extra', 'continent', 'leagues'}
 
