@@ -419,7 +419,7 @@ class SoccerApiV2(_base.BaseApiV2):
 
     def fixture_tv_stations(self, fixture_id: int) -> Response:
         """Return tv stations broadcasting specified fixture."""
-        log.info('Fetch TV stations boradcasting a fixture (id=%s)', fixture_id)
+        log.info('Fetch TV stations broadcasting a fixture (id=%s)', fixture_id)
         fixture_tv_stations = self._http_get(endpoint=join('tvstations', 'fixture', str(fixture_id)))
         log.info('Fetched %s TV stations', len(fixture_tv_stations))
         return fixture_tv_stations
