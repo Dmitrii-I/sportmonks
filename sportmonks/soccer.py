@@ -5,7 +5,7 @@
 
 from os.path import join
 from logging import getLogger
-from typing import Dict, List, Iterable, Union, Any, Optional
+from typing import Dict, List, Iterable, Any, Optional
 from datetime import date
 from requests import get
 from sportmonks import _base
