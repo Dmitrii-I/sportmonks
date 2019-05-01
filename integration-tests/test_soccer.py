@@ -324,7 +324,7 @@ def test_video_highlights(soccer_api):
     expected = {'created_at', 'fixture_id', 'fixture', 'location'}
 
     for hl in highlights:
-        assert set(hl.keys()) == expected | set(hl.keys()) == expected - {'fixture'}
+        assert set(hl.keys()) == expected or set(hl.keys()) == expected - {'fixture'}
 
     fixture_highlights = soccer_api.video_highlights(fixture_id=218832)
     for hl in fixture_highlights:
@@ -346,7 +346,7 @@ def test_head_to_head_fixtures(soccer_api):
         'standings', 'time', 'venue_id', 'visitorteam_id', 'weather_report', 'winning_odds_calculated'
     }
 
-    essential_includes = ('localTeam', 'visitorTeam', 'league', 'season', 'round', 'stage', 'venue')
+    essential_includes = ('localTeam', 'visitorTeam', 'league', 'season', 'round', 'stage')
 
     fixtures = soccer_api.head_to_head_fixtures(team_ids={85, 86}, includes=essential_includes)
 
@@ -393,7 +393,7 @@ def test_teams(soccer_api):
                 'national_team', 'country'}
     teams = soccer_api.teams(season_id=6361, includes=tuple(includes))
 
-    assert len(teams) == 16
+    assert len(teams) == 14
     assert teams[0]['country']['name'] == 'Denmark'
 
     for team in teams:
@@ -421,9 +421,11 @@ def test_team_stats(soccer_api):
     """Test `team_stats` method."""
     expected = {
         'avg_first_goal_conceded', 'avg_first_goal_scored', 'avg_goals_per_game_conceded',
-        'avg_goals_per_game_scored', 'clean_sheet', 'draw', 'failed_to_score', 'goals_against',
+        'avg_goals_per_game_scored', 'clean_sheet', 'draw', 'goals_against',
         'goals_for', 'lost', 'scoring_minutes', 'season_id', 'team_id', 'win',
-        'stage_id'
+        'stage_id', 'dangerous_attacks', 'shots_on_target', 'fouls', 'redcards',
+        'shots_off_target', 'avg_fouls_per_game', 'shots_blocked', 'avg_shots_on_target_per_game',
+        'avg_ball_possession_percentage', 'yellowcards', 'offsides', 'avg_shots_off_target_per_game', 'attacks'
     }
 
     team_stats = soccer_api.team_stats(team_id=85)
@@ -481,7 +483,7 @@ def test_pre_match_odds(soccer_api):
     odds = soccer_api.pre_match_odds(fixture_id=1625164)
 
     for odd in odds:
-        assert set(odd.keys()) == {'id', 'bookmaker', 'name'}
+        assert set(odd.keys()) == {'id', 'bookmaker', 'name', 'suspended'}
         for bookmaker in odd['bookmaker']:
             assert set(bookmaker.keys()) == {'id', 'odds', 'name'}
 
