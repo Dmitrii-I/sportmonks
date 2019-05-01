@@ -192,7 +192,7 @@ class SoccerApiV2(_base.BaseApiV2):
         """
         endpoint = join('fixtures', 'between', start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'),
                         str(team_id))
-        log.info('Fetch fixtures of a team (id=%s), from=%s, until=%s, includes=%s', start_date, end_date, team_id,
+        log.info('Fetch fixtures of a team (id=%s), from=%s, until=%s, includes=%s', team_id, start_date, end_date,
                  includes)
         team_fixtures = self._http_get(endpoint=endpoint, includes=includes)
         log.info('Fetched %s team fixtures', len(team_fixtures))
