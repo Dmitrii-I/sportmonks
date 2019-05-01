@@ -324,7 +324,7 @@ def test_video_highlights(soccer_api):
     expected = {'created_at', 'fixture_id', 'fixture', 'location'}
 
     for hl in highlights:
-        assert set(hl.keys()) == expected
+        assert set(hl.keys()) == expected | set(hl.keys()) == expected - {'fixture'}
 
     fixture_highlights = soccer_api.video_highlights(fixture_id=218832)
     for hl in fixture_highlights:
