@@ -138,7 +138,7 @@ class SoccerApiV2(_base.BaseApiV2):
         `trends`.
         """
         includes = ['results'] + ['results.' + inc for inc in includes or []]
-        log.info("Fetch results of a season (id=%s), includes=%s", season_id, includes)
+        log.info('Fetch results of a season (id=%s), includes=%s', season_id, includes)
 
         season_results = self.season(season_id=season_id, includes=includes)
 
@@ -209,7 +209,7 @@ class SoccerApiV2(_base.BaseApiV2):
         `stage`, `referee`, `events`, `venue`, `odds`, `flatOdds`, `inplay`, `localCoach`, `visitorCoach`, `group`,
         `trends`.
         """
-        log.info("Fetch today's fixtures, league ids=%s, includes=%s", league_ids or 'all leagues', includes)
+        log.info('Fetch today\'s fixtures, league ids=%s, includes=%s', league_ids or 'all leagues', includes)
         fixtures_today = self._http_get(endpoint='livescores', params={'leagues': league_ids or []}, includes=includes)
         log.info('Fetched %s fixtures', len(fixtures_today))
         return fixtures_today
