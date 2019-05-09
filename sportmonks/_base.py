@@ -4,7 +4,7 @@ import abc
 
 from os.path import join
 from logging import getLogger
-from typing import Dict, List, Iterable, Optional, Any, Union
+from typing import Dict, Iterable, Optional, Any
 
 import requests
 import pytz
