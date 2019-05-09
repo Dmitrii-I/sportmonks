@@ -10,3 +10,4 @@ sdist/
 build/
 sportmonks.egg-info/
 .mypy_cache/
+*.log

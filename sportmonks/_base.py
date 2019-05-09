@@ -3,7 +3,7 @@
 import abc
 
 from os.path import join
-from logging import getLogger
+import logging
 from typing import Dict, Iterable, Optional, Any
 
 import requests
@@ -13,7 +13,9 @@ import tzlocal
 from sportmonks import __version__
 from sportmonks._types import Response
 
-log = getLogger(__name__)
+logging.basicConfig(filename='sportmonks.log', format='%(asctime)s %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S',
+                    level=logging.DEBUG)
+log = logging.getLogger(__name__)
 
 
 class BaseApiV2(metaclass=abc.ABCMeta):

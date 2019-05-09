@@ -4,15 +4,16 @@
 
 
 from os.path import join
-from logging import getLogger
+import logging
 from typing import Dict, List, Iterable, Any, Optional
 from datetime import date
 from requests import get
 from sportmonks import _base
 from sportmonks._types import Response, Includes
 
-
-log = getLogger(__name__)
+logging.basicConfig(filename='sportmonks.log', format='%(asctime)s %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S',
+                    level=logging.INFO)
+log = logging.getLogger(__name__)
 
 
 class SoccerApiV2(_base.BaseApiV2):
