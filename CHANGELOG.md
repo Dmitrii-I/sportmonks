@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2019-05-09)
+* Reordered endpoints
+* Added endpoints
+* Added `includes` to `SoccerAPIV2.player`
 
 ## 1.0.0 (2018-12-01)
 * Stop caching methods. As such caching has been removed from `SoccerApiV2.bookmaker`, `SoccerApiV2.continent`, `SoccerApiV2.country`, `SoccerApiV2.league`. Caching can still be done by callers with the `functools.lru_cache` decorator.
