@@ -171,7 +171,7 @@ class SoccerApiV2(_base.BaseApiV2):
         endpoint = join('head2head', str(team_ids[0]), str(team_ids[1]))
         log.info('Fetch head-to-head fixtures of two teams (ids=%s), includes=%s', team_ids, includes)
         head_to_head_fixtures = self._http_get(endpoint=endpoint, includes=includes)
-        log.info('Fetch fixtures (id=%s), includes=%s', fixture_ids, includes)
+        log.info('Fetch fixtures (id=%s), includes=%s', team_ids, includes)
         return head_to_head_fixtures
 
     def video_highlights(self, fixture_id: Optional[int] = None, includes: Includes = None) -> Response:
