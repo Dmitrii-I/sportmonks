@@ -247,7 +247,7 @@ def test_fixtures_today(soccer_api):
     return value means we cannot know what includes will be attached to each returned fixture if we request all of
     them. Therefore we request a limited set of includes, one which we assume is available for any fixture.
     """
-    essential_includes = ('localTeam', 'visitorTeam', 'league', 'season', 'round', 'stage', 'venue')
+    essential_includes = ('localTeam', 'visitorTeam', 'league', 'season', 'round', 'stage')
     fixtures = soccer_api.fixtures_today(includes=essential_includes)
     assert isinstance(fixtures, list)
 
@@ -415,12 +415,12 @@ def test_team(soccer_api):
 def test_team_stats(soccer_api):
     """Test `team_stats` method."""
     expected = {
-        'avg_first_goal_conceded', 'avg_first_goal_scored', 'avg_goals_per_game_conceded',
-        'avg_goals_per_game_scored', 'clean_sheet', 'draw', 'goals_against',
-        'goals_for', 'lost', 'scoring_minutes', 'season_id', 'team_id', 'win',
-        'stage_id', 'dangerous_attacks', 'shots_on_target', 'fouls', 'redcards',
-        'shots_off_target', 'avg_fouls_per_game', 'shots_blocked', 'avg_shots_on_target_per_game',
-        'avg_ball_possession_percentage', 'yellowcards', 'offsides', 'avg_shots_off_target_per_game', 'attacks'
+        'avg_first_goal_conceded', 'avg_fouls_per_game', 'win', 'avg_ball_possession_percentage',
+        'avg_shots_off_target_per_game', 'lost', 'avg_goals_per_game_conceded', 'offsides', 'dangerous_attacks',
+        'clean_sheet', 'attacks', 'avg_shots_on_target_per_game', 'shots_on_target', 'stage_id', 'draw', 'season_id',
+        'team_id', 'shots_off_target', 'yellowcards', 'fouls', 'goals_against', 'failed_to_score',
+        'avg_goals_per_game_scored', 'redcards', 'goals_for', 'scoring_minutes', 'shots_blocked',
+        'avg_first_goal_scored'
     }
 
     team_stats = soccer_api.team_stats(team_id=85)
