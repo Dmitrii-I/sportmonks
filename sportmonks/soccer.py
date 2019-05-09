@@ -426,7 +426,7 @@ class SoccerApiV2(_base.BaseApiV2):
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
         Valid objects are: `position`, `team`, `stats`, `trophies`, `sidelined`, `transfers`, `lineups`.
         """
-        log.info('Fetch player (id=%s), includes=%s', player_id)
+        log.info('Fetch player (id=%s), includes=%s', player_id, includes)
         return self._http_get(endpoint=join('players', str(player_id)), includes=includes)
 
     def squad(self, season_id: int, team_id: int, includes: Includes = None) -> Response:
