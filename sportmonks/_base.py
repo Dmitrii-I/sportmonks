@@ -54,7 +54,6 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         :returns: Unnested dictionary.
         :raises: IncompatibleDictionarySchema
         """
-        log.debug('Unnest dictionary')
         unnested = dict()
 
         for k in dictionary:
