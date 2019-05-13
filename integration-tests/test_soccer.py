@@ -101,12 +101,7 @@ def test_seasons(soccer_api):
     seasons = soccer_api.seasons(includes=includes)
 
     for season in seasons:
-
-        # fixtures includes is always missing even though SportMonks documentation says it is available
-        if 'fixtures' in season:
-            raise KeyError('Found `fixtures` includes! The test needs to be adjusted to test for this')
-
-        assert set(includes) - {'fixtures'} <= set(season.keys())
+        assert set(includes) <= set(season.keys())
 
 
 def test_season(soccer_api):
