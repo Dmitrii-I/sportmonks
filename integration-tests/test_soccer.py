@@ -317,9 +317,14 @@ def test_video_highlights(soccer_api):
     """Test `video_highlights` method."""
     highlights = soccer_api.video_highlights(includes=('fixture',))
     expected = {'created_at', 'fixture_id', 'fixture', 'location'}
+    highlights_without_fixture_include = {10324789, 10324789, 10324402}
 
     for hl in highlights:
-        assert set(hl.keys()) == expected
+
+        if hl['fixture_id'] in highlights_without_fixture_include:
+            assert set(hl.keys()) == expected - {'fixture'}
+        else:
+            assert set(hl.keys()) == expected
 
     fixture_highlights = soccer_api.video_highlights(fixture_id=218832)
     for hl in fixture_highlights:
