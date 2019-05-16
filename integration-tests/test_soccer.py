@@ -45,8 +45,8 @@ def test_countries(soccer_api):
     for country in soccer_api.countries(includes=('continent', 'leagues')):
 
         # Following countries have no continent associated with them:
-        countries_without_continent = {99474, 190324, 1442002, 1884978, 3499960, 8151924, 11311331, 
-                                       12444275, 14534056, 14566098, 14566636, 15288356, 15629849, 25293454, 32396817, 
+        countries_without_continent = {99474, 190324, 1442002, 1884978, 3499960, 8151924, 11311331,
+                                       12444275, 14534056, 14566098, 14566636, 15288356, 15629849, 25293454, 32396817,
                                        32533155, 34319255}
 
         expected = {'name', 'id', 'extra', 'continent', 'leagues'}
@@ -317,6 +317,7 @@ def test_video_highlights(soccer_api):
     """Test `video_highlights` method."""
     highlights = soccer_api.video_highlights(includes=('fixture',))
     expected = {'created_at', 'fixture_id', 'fixture', 'location'}
+    highlights_without_fixture_include = {10324789, 10324789, 10324402}
 
     for hl in highlights:
         assert set(hl.keys()) == expected or set(hl.keys()) == expected - {'fixture'}
