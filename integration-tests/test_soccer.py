@@ -346,7 +346,7 @@ def test_head_to_head_fixtures(soccer_api):
         'standings', 'time', 'venue_id', 'visitorteam_id', 'weather_report', 'winning_odds_calculated'
     }
 
-    essential_includes = ('localTeam', 'visitorTeam', 'league', 'season', 'round', 'stage', 'venue')
+    essential_includes = ('localTeam', 'visitorTeam', 'league', 'season', 'round', 'stage')
 
     fixtures = soccer_api.head_to_head_fixtures(team_ids={85, 86}, includes=essential_includes)
 
