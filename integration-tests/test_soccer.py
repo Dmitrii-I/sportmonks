@@ -393,7 +393,7 @@ def test_teams(soccer_api):
                 'national_team', 'country'}
     teams = soccer_api.teams(season_id=6361, includes=tuple(includes))
 
-    assert len(teams) == 16
+    assert len(teams) == 14
     assert teams[0]['country']['name'] == 'Denmark'
 
     for team in teams:
