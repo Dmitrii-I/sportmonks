@@ -22,9 +22,9 @@ from sportmonks import __version__
 
 # -- Project information -----------------------------------------------------
 
-project = 'sportmonks'
-copyright = '2018, Dmitrii Izgurskii'
-author = 'Dmitrii Izgurskii'
+project = 'sportmonks_v2'
+copyright = '2019, Sebastiaan Speck'
+author = 'Sebastiaan Speck'
 
 # The short X.Y version
 version = __version__
@@ -137,8 +137,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'sportmonks.tex', 'sportmonks Documentation',
-     'Dmitrii Izgurskii', 'manual'),
+    (master_doc, 'sportmonks_v2.tex', 'sportmonks_v2 Documentation',
+     'Sebastiaan Speck', 'manual'),
 ]
 
 
@@ -147,7 +147,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'sportmonks', 'sportmonks Documentation',
+    (master_doc, 'sportmonks_v2', 'sportmonks_v2 Documentation',
      [author], 1)
 ]
 
@@ -158,8 +158,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'sportmonks', 'sportmonks Documentation',
-     author, 'sportmonks', 'One line description of project.',
+    (master_doc, 'sportmonks_v2', 'sportmonks_v2 Documentation',
+     author, 'sportmonks_v2', 'One line description of project.',
      'Miscellaneous'),
 ]
 

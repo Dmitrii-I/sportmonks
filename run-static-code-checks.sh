@@ -5,7 +5,7 @@ echo "Run pylava"
 
 echo "Run mypy"
 
-for f in sportmonks/*.py; do
+for f in sportmonks_v2/*.py; do
     echo Check file "$f"
     mypy --config-file setup.cfg "$f"
 done

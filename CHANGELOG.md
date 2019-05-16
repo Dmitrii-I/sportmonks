@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2 (2019-05-16)
+* Bugfixes
+
 ## 2.0.1 (2019-05-09)
 * Reordered endpoints
 * Added endpoints

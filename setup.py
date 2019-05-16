@@ -1,7 +1,7 @@
 """Configure package installation and distribution."""
 
 from setuptools import setup, find_packages
-from sportmonks import __version__
+from sportmonks_v2 import __version__
 
 setup_args = dict(
     name='sportmonks_v2',
@@ -10,7 +10,7 @@ setup_args = dict(
     long_description='Pythonic wrapper around SportMonks API.',
     author='Sebastiaan Speck',
     author_email='shemspeck@gmail.com',
-    url='https://github.com/sebastiaanspeck/sportmonks',
+    url='https://github.com/sebastiaanspeck/sportmonks_v2',
     download_url='https://pypi.org/project/sportmonks_v2/',
     license='MIT',
     packages=find_packages(exclude=['contrib', 'docs', '*test*']),

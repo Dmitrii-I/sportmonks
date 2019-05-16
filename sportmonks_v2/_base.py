@@ -1,4 +1,4 @@
-"""Base module to be used by other sportmonks modules."""
+"""Base module to be used by other sportmonks_v2 modules."""
 
 import abc
 
@@ -10,11 +10,11 @@ import requests
 import pytz
 import tzlocal
 
-from sportmonks import __version__
-from sportmonks._types import Response
+from sportmonks_v2 import __version__
+from sportmonks_v2._types import Response
 
-logging.basicConfig(filename='sportmonks.log', format='%(asctime)s %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S',
-                    level=logging.DEBUG)
+logging.basicConfig(filename='sportmonks_v2.log', format='%(asctime)s %(levelname)s: %(message)s',
+                    datefmt='%d-%m-%Y %H:%M:%S', level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 
@@ -40,7 +40,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         self._base_params = {'api_token': self.api_token, 'tz': str(self.timezone)}
         self._base_headers = {
             'Accept-Encoding': 'gzip, deflate',
-            'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
+            'User-Agent': 'https://github.com/sebastiaanspeck/sportmonks {version}'.format(version=__version__)
         }
 
     def _unnested(self, dictionary: Dict[Any, Any]) -> Dict[Any, Any]:
@@ -121,6 +121,33 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         if raw_response.request.url:
             log.debug('GET succeeded of the complete url: %s',
                       raw_response.request.url.replace(self.api_token, 'API_TOKEN_REDACTED'))
+
+        response_status_code = raw_response.status_code
+        suppress_raise_error = False
+        if response_status_code != requests.codes.ok:
+            if response_status_code == requests.codes.bad_request:
+                error_message = "It seems that some part of the request is malformed. The exact reason is returned " \
+                                "in the response."
+                suppress_raise_error = True
+            elif response_status_code == requests.codes.unauthorized:
+                error_message = "The request is not authenticated. Please check if your API-token is correct and may " \
+                                "access this endpoint."
+            elif response_status_code == requests.codes.forbidden:
+                error_message = "Not authorized. Indicates you're attempting to request data which is not accessible " \
+                                "from your plan."
+            elif response_status_code == requests.codes.too_many_requests:
+                error_message = "Too Many Requests. In order to make the API as responsive as possible, you have " \
+                                "an hourly request limit. The limit for your current subscription can be found " \
+                                "in any successful response. Check the \"meta\" section to find out your limit."
+            elif response_status_code == requests.codes.internal_server_error:
+                error_message = "An internal error has occurred, and has been logged for further inspection. " \
+                                "Please send a mail to support@sportmonks.com if you are receiving this error."
+            else:
+                error_message = "Whoops... Something went wrong!"
+            log.error('Error: %s', error_message)
+            if not suppress_raise_error:
+                raise SportMonksAPIError(error_message)
+
         response = raw_response.json()
 
         if 'error' in response:
@@ -134,7 +161,12 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             log.debug('Response is paginated: %s pages', response['meta']['pagination']['total_pages'])
             log.debug('Request pages 2 through %s', response['meta']['pagination']['total_pages'])
 
-            for page_number in range(2, response['meta']['pagination']['total_pages'] + 1):
+            if response['meta']['pagination']['total_pages'] <= 50:
+                max_page_number = response['meta']['pagination']['total_pages']
+            else:
+                max_page_number = 50
+
+            for page_number in range(2, max_page_number + 1):
                 params['page'] = page_number
                 response_single_page = self._http_get(endpoint=endpoint, params=params, includes=includes)
                 response['data'] += response_single_page
@@ -156,23 +188,19 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
 class ApiKeyMissingError(Exception):
     """Raised when API key is not provided."""
-
     pass
 
 
 class BaseUrlMissingError(Exception):
     """Raised when base url is not provided."""
-
     pass
 
 
 class SportMonksAPIError(Exception):
     """Raised when SportMonks returns an API error."""
-
     pass
 
 
 class IncompatibleDictionarySchema(Exception):
     """Raised when a dictionary cannot be unnested."""
-
     pass

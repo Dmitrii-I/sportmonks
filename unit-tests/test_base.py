@@ -7,8 +7,8 @@ from unittest.mock import Mock, patch
 import pytz
 import tzlocal
 
-from sportmonks import __version__
-from sportmonks._base import BaseApiV2, SportMonksAPIError, BaseUrlMissingError, ApiKeyMissingError
+from sportmonks_v2 import __version__
+from sportmonks_v2._base import BaseApiV2, SportMonksAPIError, BaseUrlMissingError, ApiKeyMissingError
 
 
 class TestBaseApiV20(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestBaseApiV20(unittest.TestCase):
         pass
 
     def test_init_raises_exceptions(self):
-        """Test that `__init__` raises excepions when base url or API key are missing."""
+        """Test that `__init__` raises exceptions when base url or API key are missing."""
         self.assertRaises(BaseUrlMissingError, BaseApiV2, base_url=None, api_token='foo')
         self.assertRaises(ApiKeyMissingError, BaseApiV2, base_url='foo', api_token=None)
 
@@ -52,13 +52,13 @@ class TestBaseApiV20(unittest.TestCase):
             params={'api_token': 'foo', 'tz': 'UTC', 'param': '1,2', 'include': 'bar,foo', 'page': 1},
             headers={
                 'Accept-Encoding': 'gzip, deflate',
-                'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
+                'User-Agent': 'https://github.com/sebastiaanspeck/sportmonks {version}'.format(version=__version__)
             }
         )
         self.assertEqual(1, api.http_requests_made)
 
     @patch('requests.get')
-    def test_http_get_works_wtih_includes_being_any_iterable(self, mocked_get):
+    def test_http_get_works_with_includes_being_any_iterable(self, mocked_get):
         """Test that `_http_get` works with `includes` parameters being any iterable."""
         api = BaseApiV2(base_url='bar', api_token='foo', tz_name='UTC')
 
@@ -93,7 +93,8 @@ class TestBaseApiV20(unittest.TestCase):
                 },
                 headers={
                     'Accept-Encoding': 'gzip, deflate',
-                    'User-Agent': 'https://github.com/Dmitrii-I/sportmonks {version}'.format(version=__version__)
+                    'User-Agent': 'https://github.com/sebastiaanspeck/sportmonks_v2 {version}'.format(
+                        version=__version__)
                 }
             )
 
@@ -105,7 +106,7 @@ class TestBaseApiV20(unittest.TestCase):
         api = BaseApiV2(base_url='foo', api_token='bar')
         self.assertRaises(TypeError, BaseApiV2._http_get, api, endpoint='foo')
 
-    @patch('sportmonks._base.log', new=Mock())
+    @patch('sportmonks_v2._base.log', new=Mock())
     @patch('requests.get')
     def test_http_get_raises_sportmonks_api_error(self, mocked_get):
         """Test that `_http_get` raises SportMonksAPIError."""
@@ -129,7 +130,7 @@ class TestBaseApiV20(unittest.TestCase):
     @patch('requests.get')
     def test_http_get_requests_all_pages(self, mocked_requests_get):
         """Test that `_http_get` requests all pages."""
-        def mocked_response(url, params, headers):
+        def mocked_response(params):
             response = Mock()
             response.request = Mock()
             response.json.return_value = {

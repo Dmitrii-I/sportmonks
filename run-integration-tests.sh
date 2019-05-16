@@ -22,7 +22,7 @@ trap on_exit EXIT
 trap on_interrupt INT
 
 
-echo "Start integration testing of Python package 'sportmonks'"
+echo "Start integration testing of Python package 'sportmonks_v2'"
 
 echo "Loading SportMonks API key from environment variable SPORTMONKS_API_KEY, with fallback to ~/.sportmonks_api_key file."
 
