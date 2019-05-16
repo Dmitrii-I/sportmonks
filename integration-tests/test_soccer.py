@@ -420,11 +420,11 @@ def test_team(soccer_api):
 def test_team_stats(soccer_api):
     """Test `team_stats` method."""
     expected = {
-        'avg_first_goal_conceded', 'avg_first_goal_scored', 'avg_goals_per_game_conceded',
-        'avg_goals_per_game_scored', 'clean_sheet', 'draw', 'failed_to_score', 'goals_against',
-        'goals_for', 'lost', 'scoring_minutes', 'season_id', 'team_id', 'win',
-        'stage_id'
-    }
+        'offsides', 'lost', 'dangerous_attacks', 'goals_for', 'shots_blocked', 'avg_shots_off_target_per_game',
+        'avg_ball_possession_percentage', 'clean_sheet', 'stage_id', 'team_id', 'avg_shots_on_target_per_game',
+        'redcards', 'scoring_minutes', 'avg_fouls_per_game', 'avg_first_goal_scored', 'avg_goals_per_game_conceded',
+        'season_id', 'failed_to_score', 'yellowcards', 'shots_on_target', 'fouls', 'goals_against',
+        'avg_first_goal_conceded', 'shots_off_target', 'draw', 'avg_goals_per_game_scored', 'attacks', 'win'}
 
     team_stats = soccer_api.team_stats(team_id=85)
     for season_stats in team_stats:
