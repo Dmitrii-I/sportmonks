@@ -481,7 +481,7 @@ def test_pre_match_odds(soccer_api):
     odds = soccer_api.pre_match_odds(fixture_id=1625164)
 
     for odd in odds:
-        assert set(odd.keys()) == {'id', 'bookmaker', 'name'}
+        assert set(odd.keys()) == {'id', 'bookmaker', 'name', 'suspended'}
         for bookmaker in odd['bookmaker']:
             assert set(bookmaker.keys()) == {'id', 'odds', 'name'}
 
