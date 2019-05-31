@@ -80,6 +80,7 @@ with:
 
 
 .. code-block:: pycon
+
     redacted_url = re.sub(r"(api_token=).*(&)", r"\1API_TOKEN_REDACTED\2", url)
 
     log.debug("%s://%s:%s \"%s %s %s\" %s %s", self.scheme, self.host, self.port,
