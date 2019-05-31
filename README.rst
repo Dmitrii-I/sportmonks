@@ -67,7 +67,7 @@ Notes
 =====
 
 If you want to redact the API-token completely in the logging, you need to make some changes to urllib3.
-You need to change lines in `connectionpool.py`. Replace the lines:
+You need to change lines in `connectionpool.py`. Replace the lines in _make_request (line 320):
 
 .. code-block:: python
     log.debug("%s://%s:%s \"%s %s %s\" %s %s", self.scheme, self.host, self.port,
