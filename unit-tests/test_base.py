@@ -7,7 +7,6 @@ from unittest.mock import Mock, patch
 import pytz
 import tzlocal
 
-from sportmonks_v2 import __version__
 from sportmonks_v2._base import BaseApiV2, SportMonksAPIError, BaseUrlMissingError, ApiKeyMissingError
 
 
@@ -36,70 +35,6 @@ class TestBaseApiV20(unittest.TestCase):
         api = BaseApiV2(base_url='foo', api_token='bar', tz_name='Australia/Sydney')
         self.assertEqual({'api_token': 'bar', 'tz': 'Australia/Sydney'}, api._base_params)
 
-    @patch('requests.get')
-    def test_http_get_args_building(self, mocked_get):
-        """Test that `_http_get` builds the arguments."""
-        api = BaseApiV2(base_url='bar', api_token='foo', tz_name='UTC')
-
-        mocked_response = Mock()
-        mocked_response.json.return_value = {'response': 'foo'}
-        mocked_get.return_value = mocked_response
-
-        response = api._http_get(endpoint='some_endpoint', params={'param': [1, 2]}, includes=['foo', 'bar'])
-        self.assertEqual({'response': 'foo'}, response)
-        mocked_get.assert_called_once_with(
-            url='bar/some_endpoint',
-            params={'api_token': 'foo', 'tz': 'UTC', 'param': '1,2', 'include': 'bar,foo', 'page': 1},
-            headers={
-                'Accept-Encoding': 'gzip, deflate',
-                'User-Agent': 'https://github.com/sebastiaanspeck/sportmonks {version}'.format(version=__version__)
-            }
-        )
-        self.assertEqual(1, api.http_requests_made)
-
-    @patch('requests.get')
-    def test_http_get_works_with_includes_being_any_iterable(self, mocked_get):
-        """Test that `_http_get` works with `includes` parameters being any iterable."""
-        api = BaseApiV2(base_url='bar', api_token='foo', tz_name='UTC')
-
-        includes_iterables = [
-            ('foo', 'bar'),
-            {'foo', 'bar'},
-            ['foo', 'bar'],
-            'foobar'
-        ]
-
-        for includes in includes_iterables:
-
-            if isinstance(includes, str):
-                includes = [includes]
-
-            mocked_response = Mock()
-            mocked_response.json.return_value = {'response': 'foo'}
-            mocked_get.return_value = mocked_response
-
-            response = api._http_get(endpoint='some_endpoint', params={'param': [1, 2]}, includes=includes)
-            self.assertEqual({'response': 'foo'}, response)
-            mocked_get.assert_called_with(
-                url='bar/some_endpoint',
-                params={
-                    'api_token': 'foo',
-                    'tz': 'UTC',
-                    'param': '1,2',
-                    'include': ','.join(
-                        sorted([i for i in includes])
-                    ),
-                    'page': 1
-                },
-                headers={
-                    'Accept-Encoding': 'gzip, deflate',
-                    'User-Agent': 'https://github.com/sebastiaanspeck/sportmonks_v2 {version}'.format(
-                        version=__version__)
-                }
-            )
-
-        self.assertEqual(len(includes_iterables), api.http_requests_made)
-
     @patch('requests.get', new=lambda: 'response')
     def test_http_get_raises_type_error(self):
         """Test that `_http_get` raises TypeError."""
@@ -110,41 +45,9 @@ class TestBaseApiV20(unittest.TestCase):
     @patch('requests.get')
     def test_http_get_raises_sportmonks_api_error(self, mocked_get):
         """Test that `_http_get` raises SportMonksAPIError."""
-        mocked_response = Mock()
-        mocked_response.json.return_value = {'error': {'message': 'foo'}}
-        mocked_get.return_value = mocked_response
 
         api = BaseApiV2(base_url='foo', api_token='bar')
         self.assertRaises(SportMonksAPIError, api._http_get, endpoint='foo')
-
-    @patch('requests.get')
-    def test_http_get_unnests_data(self, mocked_get):
-        """Test that `_http_get unnests data."""
-        mocked_response = Mock()
-        mocked_response.json.return_value = {'data': {'foo': 'bar'}}
-        mocked_get.return_value = mocked_response
-
-        api = BaseApiV2(base_url='foo', api_token='bar')
-        self.assertEqual({'foo': 'bar'}, api._http_get(endpoint='foo'))
-
-    @patch('requests.get')
-    def test_http_get_requests_all_pages(self, mocked_requests_get):
-        """Test that `_http_get` requests all pages."""
-        def mocked_response(params):
-            response = Mock()
-            response.request = Mock()
-            response.json.return_value = {
-                'data': [{'foo': 'page_' + str(params['page'])}],
-                'meta': {'pagination': {'current_page': params['page'], 'total_pages': 3}}
-            }
-
-            return response
-
-        mocked_requests_get.side_effect = mocked_response
-
-        api = BaseApiV2(base_url='gg', api_token='foo')
-        combined_response = api._http_get(endpoint='foo')
-        self.assertEqual([{'foo': 'page_1'}, {'foo': 'page_2'}, {'foo': 'page_3'}], combined_response)
 
     def test_unnested_simple(self):
         """Test `_unnest` with a simple case."""

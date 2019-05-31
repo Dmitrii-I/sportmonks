@@ -9,4 +9,3 @@ for f in sportmonks_v2/*.py; do
     echo Check file "$f"
     mypy --config-file setup.cfg "$f"
 done
-

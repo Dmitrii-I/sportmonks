@@ -77,17 +77,17 @@ class TestSoccerApiV2(unittest.TestCase):
     def test_season_results(self):
         """Test `season_results` method."""
         api = MagicMock()
-        api.season.return_value = {'results': 'foo'}
         # noinspection PyCallByClass, PyTypeChecker
-        self.assertEqual('foo', SoccerApiV2.season_results(api, season_id=1, includes=['foo', 'bar']))
-        api.season.assert_called_once_with(season_id=1, includes=['results', 'results.foo', 'results.bar'])
+        SoccerApiV2.season_results(api, season_id=1, includes=['foo', 'bar'])
+        api._http_get.assert_called_once_with(endpoint='seasons/results/1',
+                                              includes=['results', 'results.foo', 'results.bar'])
 
         # Test without any includes
         api = MagicMock()
-        api.season.return_value = {'results': 'foo'}
         # noinspection PyCallByClass, PyTypeChecker
-        self.assertEqual('foo', SoccerApiV2.season_results(api, season_id=1))
-        api.season.assert_called_once_with(season_id=1, includes=['results'])
+        SoccerApiV2.season_results(api, season_id=1)
+        api._http_get.assert_called_once_with(endpoint='seasons/results/1',
+                                              includes=['results'])
 
     def test_fixtures_between(self):
         """Test `fixtures_between` method."""
@@ -96,14 +96,16 @@ class TestSoccerApiV2(unittest.TestCase):
         SoccerApiV2.fixtures_between(api, start_date=date(2000, 1, 1), end_date=date(2001, 1, 1), league_ids=[1],
                                      includes=['foo', 'bar'])
         api._http_get.assert_called_once_with(endpoint='fixtures/between/2000-01-01/2001-01-01',
-                                              params={'leagues': [1]}, includes=['foo', 'bar'])
+                                              includes=['foo', 'bar'], params={'leagues': [1], 'markets': [],
+                                                                               'bookmakers': []})
 
     def test_fixture_by_id(self):
         """Test `fixture_by_id` method."""
         api = MagicMock()
         # noinspection PyCallByClass, PyTypeChecker
         SoccerApiV2.fixture_by_id(api, fixture_id=1, includes=['foo', 'bar'])
-        api._http_get.assert_called_once_with(endpoint='fixtures/1', includes=['foo', 'bar'])
+        api._http_get.assert_called_once_with(endpoint='fixtures/1', includes=['foo', 'bar'],
+                                              params={'markets': [], 'bookmakers': []})
 
     def test_fixtures_between_by_team_id(self):
         """Test `fixtures_between_by_team_id` method."""
@@ -112,21 +114,24 @@ class TestSoccerApiV2(unittest.TestCase):
         SoccerApiV2.fixtures_between_by_team_id(api, start_date=date(2000, 1, 1), end_date=date(2001, 1, 1), team_id=1,
                                                 includes=['foo', 'bar'])
         api._http_get.assert_called_once_with(endpoint='fixtures/between/2000-01-01/2001-01-01/1',
-                                              includes=['foo', 'bar'])
+                                              includes=['foo', 'bar'], params={'leagues': [], 'markets': [],
+                                                                               'bookmakers': []})
 
     def test_fixtures_today(self):
         """Test `fixtures_today` method."""
         api = MagicMock()
         # noinspection PyCallByClass, PyTypeChecker
         SoccerApiV2.fixtures_today(api, league_ids=[1], includes=['foo', 'bar'])
-        api._http_get.assert_called_once_with(endpoint='livescores', params={'leagues': [1]}, includes=['foo', 'bar'])
+        api._http_get.assert_called_once_with(endpoint='livescores', includes=['foo', 'bar'],
+                                              params={'leagues': [1], 'markets': [], 'bookmakers': []})
 
     def test_fixtures_in_play(self):
         """Test `fixtures_in_play` method."""
         api = MagicMock()
         # noinspection PyCallByClass, PyTypeChecker
         SoccerApiV2.fixtures_in_play(api, includes=['foo', 'bar'])
-        api._http_get.assert_called_once_with(endpoint='livescores/now', includes=['foo', 'bar'])
+        api._http_get.assert_called_once_with(endpoint='livescores/now', includes=['foo', 'bar'],
+                                              params={'leagues': [], 'markets': [], 'bookmakers': []})
 
     def test_head_to_head_by_team_ids(self):
         """Test `head_to_head_by_team_ids` method."""
@@ -161,8 +166,8 @@ class TestSoccerApiV2(unittest.TestCase):
         api = MagicMock()
         # noinspection PyCallByClass, PyTypeChecker
         SoccerApiV2.standings_by_season_id(api, season_id=1, group_id=123, includes=['foo', 'bar'])
-        api._http_get.assert_called_once_with(endpoint='standings/season/1', includes=['foo', 'bar'],
-                                              params={'group_id': 123})
+        api._http_get.assert_called_once_with(endpoint='standings/season/1', params={'group_id': 123},
+                                              includes=['standings.foo', 'standings.bar'])
 
     def test_live_standings_by_season_id(self):
         """Test `live_standings_by_season_id` method."""
@@ -170,7 +175,7 @@ class TestSoccerApiV2(unittest.TestCase):
         # noinspection PyCallByClass, PyTypeChecker
         SoccerApiV2.live_standings_by_season_id(api, season_id=1, includes=['foo', 'bar'])
         api._http_get.assert_called_once_with(endpoint='standings/season/live/1', params={'group_id': None},
-                                              includes=['foo', 'bar'])
+                                              includes=['standings.foo', 'standings.bar'])
 
     def test_teams_by_season_id(self):
         """Test `teams_by_season_id` method."""
@@ -194,12 +199,22 @@ class TestSoccerApiV2(unittest.TestCase):
         self.assertEqual('foo', SoccerApiV2.team_stats(api, team_id=1))
         api._http_get.assert_called_once_with(endpoint='teams/1', includes=['stats'])
 
+    def test_season_stats(self):
+        """Test `season_stats` method."""
+        api = MagicMock()()
+        api._http_get.return_value = {'stats': 'foo'}
+        # noinspection PyCallByClass, PyTypeChecker
+        self.assertEqual(api._http_get.return_value, SoccerApiV2.season_stats(api, season_id=1))
+        api._http_get.assert_called_once_with(endpoint='seasons/1', includes=['stats'])
+
     def test_topscorers_by_season_id(self):
         """Test `topscorers_by_season_id` method."""
         api = MagicMock()()
         # noinspection PyCallByClass, PyTypeChecker
         SoccerApiV2.topscorers_by_season_id(api, season_id=1, includes=['foo', 'bar'])
-        api._http_get.assert_called_once_with(endpoint='topscorers/season/1', includes=['foo', 'bar'])
+        expected_includes = ['goalscorers.foo', 'goalscorers.bar', 'cardscorers.foo', 'cardscorers.bar',
+                             'assistscorers.foo', 'assistscorers.bar']
+        api._http_get.assert_called_once_with(endpoint='topscorers/season/1', includes=expected_includes)
 
     def test_venue_by_id(self):
         """Test `venue_by_id` method."""

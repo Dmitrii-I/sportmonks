@@ -15,9 +15,9 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('..'))
+from sportmonks_v2 import __version__
 
-from sportmonks import __version__
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------

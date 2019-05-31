@@ -1,5 +1,5 @@
 """The `soccer` module implements the `SportMonks soccer HTTP API v2.0.
-<https://www.sportmonks.com/sports/soccer/documentation>`__
+<https://www.sportmonks.com/docs/football/2.0/prologue/a/introduction/94>`__
 """
 
 from os.path import join
@@ -469,10 +469,16 @@ class SoccerApiV2(_base.BaseApiV2):
         log.info('Fetch team (id=%s), includes=%s', team_id, includes)
         return self._http_get(endpoint=join('teams', str(team_id)), includes=includes)
 
-    # TODO: def legacy_team_by_id(self) -> Response:
-    # """
-    # ``api/v2.0/legacy/teams/{id}``
-    # """
+    def team_by_legacy_id(self, legacy_team_id: int, includes: Includes = None) -> Response:
+        """Return a team by legacy_id.
+        ``api/v2.0/legacy/teams/{id}``
+
+        Parameter ``includes`` specifies objects to include in the response. Maximum level of nested includes is 3.
+        Valid objects are: `country`, `squad`, `coach`, `transfers`, `sidelined`, `stats`, `venue`, `fifaranking`,
+        `uefaranking`, `visitorFixtures`, `localFixtures`, `visitorResults`, `localResults`, `latest`, `upcoming`.
+        """
+        log.info('Fetch team (legacy-id=%s), includes=%s', legacy_team_id, includes)
+        return self._http_get(endpoint=join('legacy', 'teams', str(legacy_team_id)), includes=includes)
 
     def teams_by_season_id(self, season_id: int, includes: Includes = None) -> Response:
         """Return all teams that played during a season.
@@ -497,7 +503,6 @@ class SoccerApiV2(_base.BaseApiV2):
         log.info('Fetch player (id=%s), includes=%s', player_id, includes)
         return self._http_get(endpoint=join('players', str(player_id)), includes=includes)
 
-    # TODO: includes = ['goalscorers.' + inc for inc in includes or []] etc.
     def topscorers_by_season_id(self, season_id: int, includes: Includes = None) -> Response:
         """Return top scorers of a season.
         ``api/v2.0/topscorers/season/{id}``
@@ -509,13 +514,30 @@ class SoccerApiV2(_base.BaseApiV2):
         `assistscorers.player`, `assistscorers.team`.
         """
         endpoint = join('topscorers', 'season', str(season_id))
+
+        includes_goalscorers = ['goalscorers.' + inc for inc in includes or []]
+        includes_cardscorers = ['cardscorers.' + inc for inc in includes or []]
+        includes_assistscorers = ['assistscorers.' + inc for inc in includes or []]
+
+        includes = includes_goalscorers + includes_cardscorers + includes_assistscorers
+
         log.info('Fetch top scorers of a season (id=%s), includes=%s', season_id, includes)
         return self._http_get(endpoint=endpoint, includes=includes)
 
-    # TODO: def aggregated_topscorers_by_season_id(self): -> Response:
-    # """
-    # ``api/v2.0/topscorers/season/{id}/aggregated``
-    # """
+    def aggregated_topscorers_by_season_id(self, season_id: int, includes: Includes = None) -> Response:
+        """
+        ``api/v2.0/topscorers/season/{id}/aggregated``
+        """
+        endpoint = join('topscorers', 'season', str(season_id), 'aggregated')
+
+        includes_goalscorers = ['aggregatedGoalscorers.' + inc for inc in includes or []]
+        includes_cardscorers = ['aggregatedCardscorers.' + inc for inc in includes or []]
+        includes_assistscorers = ['aggregatedAssistscorers.' + inc for inc in includes or []]
+
+        includes = includes_goalscorers + includes_cardscorers + includes_assistscorers
+
+        log.info('Fetch aggregated top scorers of a season (id=%s), includes=%s', season_id, includes)
+        return self._http_get(endpoint=endpoint, includes=includes)
 
     def venue_by_id(self, venue_id: int) -> Response:
         """Return a venue.
@@ -682,19 +704,20 @@ class SoccerApiV2(_base.BaseApiV2):
         `trends`.
         """
         includes = ['results'] + ['results.' + inc for inc in includes or []]
-        print(includes)
 
         log.info('Fetch results of a season (id=%s), includes=%s', season_id, includes)
 
-        season_results = self.season_by_id(season_id=season_id, includes=includes)
+        try:
+            return self._http_get(endpoint=join('seasons', 'results', str(season_id)), includes=includes)
+        except _base.SportMonksAPIError:
+            season_results = self.season_by_id(season_id=season_id, includes=includes)
+            if isinstance(season_results, dict):
+                season_results = season_results['results']
+            else:
+                raise TypeError('Expected `dict`, got `%s`' % type(season_results))
 
-        if isinstance(season_results, dict):
-            season_results = season_results['results']
-        else:
-            raise TypeError('Expected `dict`, got `%s`' % type(season_results))
-
-        log.info('Fetched %s results', len(season_results))
-        return season_results
+            log.info('Fetched %s results', len(season_results))
+            return season_results
 
     def squad_by_season_and_team_id(self, season_id: int, team_id: int, includes: Includes = None) -> Response:
         """Return a squad. A squad is a set of players that played for a team during a season.
@@ -719,16 +742,40 @@ class SoccerApiV2(_base.BaseApiV2):
         return fixture_tv_stations
 
     def team_stats(self, team_id: int) -> Response:
-        """Return stats of a team."""
+        """Return stats of a team.
+        ``api/v2.0/teams/{id}``
+        """
         log.info('Fetch stats of a team (id=%s)', team_id)
         team_stats = self._http_get(endpoint=join('teams', str(team_id)), includes=['stats'])
         if isinstance(team_stats, dict):
-            return team_stats['stats']
+            team_stats = team_stats['stats']
         else:
             raise TypeError('Expected `dict`, got `%s`' % type(team_stats))
 
+        log.info('Fetched %s team stats', len(team_stats))
+        return team_stats
+
+    def season_stats(self, season_id: int, includes: Includes = None) -> Response:
+        """Return stats of a season.
+        ``api/v2.0/seasons/{id}``
+
+        Parameter ``includes`` specifies objects to include in the response. Maximum level of nested includes is 1.
+        Valid objects are: `mostcleansheetsteam`, `mostgoalsteam`, `assisttopscorer`, `mostgoalspermatchteam`,
+        `mostconcededgoalsteam`, `topscorer`, `mostcleansheetsgoalkeeper`
+        """
+        log.info('Fetch stats of a season (id=%s)', season_id)
+
+        includes = ['stats'] + ['stats.' + inc for inc in includes or []]
+
+        season_stats = self._http_get(endpoint=join('seasons', str(season_id)), includes=includes)
+
+        if isinstance(season_stats, dict):
+            log.info('Fetched %s season stats', len(season_stats))
+            return season_stats
+        else:
+            raise TypeError('Expected `dict`, got `%s`' % type(season_stats))
+
     # TODO: implement endpoints
-    # def season_stats(self, season_id: int) -> Response:
     # def fixture_trends(self, fixture_id: int) -> Response:
     # def team_squad(self, team_id: int) -> Response:
     # def player_injuries(self, player_id: int) -> Response:
@@ -737,4 +784,3 @@ class SoccerApiV2(_base.BaseApiV2):
     #   """
     #   ``api/v2.0/referees/{id}``
     #   """
-

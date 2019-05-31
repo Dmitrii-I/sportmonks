@@ -8,7 +8,7 @@ from typing import Dict, Iterable, Optional, Any
 
 import requests
 import pytz
-import tzlocal
+import tzlocal  # type: ignore
 
 from sportmonks_v2 import __version__
 from sportmonks_v2._types import Response
@@ -124,6 +124,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         response_status_code = raw_response.status_code
         suppress_raise_error = False
+
         if response_status_code != requests.codes.ok:
             if response_status_code == requests.codes.bad_request:
                 error_message = "It seems that some part of the request is malformed. The exact reason is returned " \
@@ -142,8 +143,11 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             elif response_status_code == requests.codes.internal_server_error:
                 error_message = "An internal error has occurred, and has been logged for further inspection. " \
                                 "Please send a mail to support@sportmonks.com if you are receiving this error."
+            elif response_status_code == requests.codes.not_found:
+                error_message = "This endpoint does not exist. Please report it to the maintainer of the SportMonks " \
+                                "package."
             else:
-                error_message = "Whoops... Something went wrong!"
+                error_message = "Whoops... Something went wrong! Returned with code:" + str(response_status_code)
             log.error('Error: %s', error_message)
             if not suppress_raise_error:
                 raise SportMonksAPIError(error_message)
