@@ -69,13 +69,13 @@ Notes
 If you want to redact the API-token completely in the logging, you need to make some changes to urllib3.
 You need to change lines in `connectionpool.py`. Replace the lines in _make_request (line 320):
 
-.. code-block:: python
+.. code-block:: pycon
     log.debug("%s://%s:%s \"%s %s %s\" %s %s", self.scheme, self.host, self.port,
           method, url, http_version, httplib_response.status,
           httplib_response.length)
 
 with:
-.. code-block:: python
+.. code-block:: pycon
     redacted_url = re.sub(r"(api_token=).*(&)", r"\1API_TOKEN_REDACTED\2", url)
 
     log.debug("%s://%s:%s \"%s %s %s\" %s %s", self.scheme, self.host, self.port,
