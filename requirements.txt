@@ -1,7 +1,26 @@
-# Requirements of the tests
-requests
-tzlocal
-pytz
-pylava
-pylava_pylint
-mypy
+# Requirements of the tests, generated with `pip freeze` (except this line)
+astroid==2.2.5
+certifi==2019.6.16
+chardet==3.0.4
+idna==2.8
+isort==4.3.21
+lazy-object-proxy==1.4.2
+mccabe==0.6.1
+mypy==0.720
+mypy-extensions==0.4.1
+pkg-resources==0.0.0
+pycodestyle==2.5.0
+pydocstyle==4.0.1
+pyflakes==2.1.1
+pylava==0.2.2
+pylava-pylint==0.0.3
+pylint==2.3.1
+pytz==2019.2
+requests==2.22.0
+six==1.12.0
+snowballstemmer==1.9.0
+typed-ast==1.4.0
+typing-extensions==3.7.4
+tzlocal==2.0.0
+urllib3==1.25.3
+wrapt==1.11.2
