@@ -1,3 +1,4 @@
+# Requirements of the tests
 requests
 tzlocal
 pytz
