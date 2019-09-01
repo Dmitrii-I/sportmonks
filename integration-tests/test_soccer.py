@@ -78,7 +78,8 @@ def test_leagues(soccer_api):
     """Test `leagues` method."""
     leagues = soccer_api.leagues(includes=('country', 'season', 'seasons'))
     expected = {'country_id', 'coverage', 'current_round_id', 'current_season_id', 'current_stage_id', 'id',
-                'is_cup', 'legacy_id', 'live_standings', 'name', 'country', 'season', 'seasons', 'logo_path'}
+                'is_cup', 'legacy_id', 'live_standings', 'name', 'country', 'season', 'seasons', 'logo_path', 'active',
+                'type'}
 
     for league in leagues:
         actual = set(league.keys())
