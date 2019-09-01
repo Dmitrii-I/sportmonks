@@ -93,7 +93,7 @@ def test_league(soccer_api):
     premiership = soccer_api.league(league_id=501, includes=tuple(includes))
 
     expected = {'country_id', 'coverage', 'current_round_id', 'current_season_id', 'current_stage_id', 'id',
-                'is_cup', 'legacy_id', 'live_standings', 'name', 'logo_path'} | includes
+                'is_cup', 'legacy_id', 'live_standings', 'name', 'logo_path', 'active', 'type'} | includes
     actual = set(premiership.keys())
 
     logging.info('extra keys: %s, missing keys: %s', actual - expected, expected - actual)
