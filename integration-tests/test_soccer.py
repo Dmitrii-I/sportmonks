@@ -94,8 +94,10 @@ def test_league(soccer_api):
 
     expected = {'country_id', 'coverage', 'current_round_id', 'current_season_id', 'current_stage_id', 'id',
                 'is_cup', 'legacy_id', 'live_standings', 'name', 'logo_path'} | includes
+    actual = set(premiership.keys())
 
-    assert expected == set(premiership.keys())
+    logging.info('extra keys: %s, missing keys: %s', actual - expected, expected - actual)
+    assert expected == actual
 
 
 def test_seasons(soccer_api):
