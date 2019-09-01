@@ -321,19 +321,23 @@ def test_commentaries(soccer_api):
 def test_video_highlights(soccer_api):
     """Test `video_highlights` method."""
     highlights = soccer_api.video_highlights(includes=('fixture',))
-    expected = {'created_at', 'fixture_id', 'fixture', 'location'}
     highlights_without_fixture_include = {10324789, 10324789, 10324402}
 
     for hl in highlights:
-
+        expected = {'created_at', 'fixture_id', 'fixture', 'location'}
         if hl['fixture_id'] in highlights_without_fixture_include:
-            assert set(hl.keys()) == expected - {'fixture'}
-        else:
-            assert set(hl.keys()) == expected
+            expected = expected - {'fixture'}
+
+        actual = set(hl.keys())
+        logging.info('extra keys: %s, missing keys: %s', actual - expected, expected - actual)
+        assert expected == actual
 
     fixture_highlights = soccer_api.video_highlights(fixture_id=218832)
     for hl in fixture_highlights:
-        assert set(hl.keys()) == expected - {'fixture'}
+        expected = {'created_at', 'fixture_id', 'location'}
+        actual = set(hl.keys())
+        logging.info('highlights fixture 218832 extra keys: %s, missing keys: %s', actual - expected, expected - actual)
+        assert expected == actual
 
 
 def test_head_to_head_fixtures(soccer_api):
