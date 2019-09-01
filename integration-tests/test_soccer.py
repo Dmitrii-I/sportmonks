@@ -81,6 +81,8 @@ def test_leagues(soccer_api):
                 'is_cup', 'legacy_id', 'live_standings', 'name', 'country', 'season', 'seasons', 'logo_path'}
 
     for league in leagues:
+        actual = set(league.keys())
+        logging.info('League %s, extra keys: %s, missing keys: %s', league['id'], actual - expected, expected - actual)
         assert expected == set(league.keys())
 
 
