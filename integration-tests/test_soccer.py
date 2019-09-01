@@ -324,7 +324,7 @@ def test_video_highlights(soccer_api):
     highlights_without_fixture_include = {10324789, 10324789, 10324402}
 
     for hl in highlights:
-        expected = {'created_at', 'fixture_id', 'fixture', 'location'}
+        expected = {'created_at', 'fixture_id', 'fixture', 'location', 'event_id', 'type'}
         if hl['fixture_id'] in highlights_without_fixture_include:
             expected = expected - {'fixture'}
 
@@ -334,7 +334,7 @@ def test_video_highlights(soccer_api):
 
     fixture_highlights = soccer_api.video_highlights(fixture_id=218832)
     for hl in fixture_highlights:
-        expected = {'created_at', 'fixture_id', 'location'}
+        expected = {'created_at', 'fixture_id', 'location', 'event_id', 'type'}
         actual = set(hl.keys())
         logging.info('highlights fixture 218832 extra keys: %s, missing keys: %s', actual - expected, expected - actual)
         assert expected == actual
