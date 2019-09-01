@@ -93,9 +93,9 @@ def test_league(soccer_api):
     premiership = soccer_api.league(league_id=501, includes=tuple(includes))
 
     expected = {'country_id', 'coverage', 'current_round_id', 'current_season_id', 'current_stage_id', 'id',
-                'is_cup', 'legacy_id', 'live_standings', 'name', 'logo_path'}
+                'is_cup', 'legacy_id', 'live_standings', 'name', 'logo_path'} | includes
 
-    assert expected | includes == set(premiership.keys())
+    assert expected == set(premiership.keys())
 
 
 def test_seasons(soccer_api):
