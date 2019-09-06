@@ -369,9 +369,6 @@ def test_standings(soccer_api):
     includes = ('team', 'league', 'season', 'round', 'stage')
     standings = soccer_api.standings(season_id=6361, includes=includes)
 
-    # because of a bug in SportMonks API, none of the includes are returned
-    assert standings == soccer_api.standings(season_id=6361)
-
     expected = {'away', 'group_id', 'group_name', 'home', 'overall', 'points', 'position', 'recent_form', 'result',
                 'status', 'team_id', 'team_name', 'total', 'round_name', 'round_id'}
 
