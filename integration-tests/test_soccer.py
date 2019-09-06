@@ -433,7 +433,9 @@ def test_team_stats(soccer_api):
         'avg_ball_possession_percentage', 'clean_sheet', 'stage_id', 'team_id', 'avg_shots_on_target_per_game',
         'redcards', 'scoring_minutes', 'avg_fouls_per_game', 'avg_first_goal_scored', 'avg_goals_per_game_conceded',
         'season_id', 'failed_to_score', 'yellowcards', 'shots_on_target', 'fouls', 'goals_against',
-        'avg_first_goal_conceded', 'shots_off_target', 'draw', 'avg_goals_per_game_scored', 'attacks', 'win'}
+        'avg_first_goal_conceded', 'shots_off_target', 'draw', 'avg_goals_per_game_scored', 'attacks', 'win', 'btts',
+        'goal_line'
+    }
 
     team_stats = soccer_api.team_stats(team_id=85)
     for season_stats in team_stats:
