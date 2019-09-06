@@ -562,7 +562,10 @@ def test_season_stages(soccer_api):
     expected_keys = {'id', 'name', 'league_id', 'season_id', 'type', 'fixtures'}
 
     for stage in season_stages:
-        assert expected_keys == set(stage.keys())
+        actual= set(stage.keys())
+        logging.info('stage %s, extra keys: %s, missing keys: %s', stage['id'], actual - expected_keys,
+                     expected_keys - actual)
+        assert expected_keys == actual
 
 
 def test_stage(soccer_api):
