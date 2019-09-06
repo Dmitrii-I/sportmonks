@@ -571,10 +571,10 @@ def test_stage(soccer_api):
     """Test `stage` method."""
     # The includes league, season, and results do not work, despite what SportMonks documents.
     stage = soccer_api.stage(stage_id=48048, includes=('fixtures',))
-    expected_keys = {'id', 'name', 'league_id', 'season_id', 'type', 'fixtures'}
+    expected = {'id', 'name', 'league_id', 'season_id', 'type', 'fixtures'}
     actual = set(stage.keys())
-    logging.info('stage 48048, extra keys: %s, missing keys %s', actual - expected_keys, expected_keys - actual)
-    assert expected_keys == actual
+    logging.info('stage 48048, extra keys: %s, missing keys %s', actual - expected, expected - actual)
+    assert expected == actual
 
 
 def test_fixture_tv_stations(soccer_api):
