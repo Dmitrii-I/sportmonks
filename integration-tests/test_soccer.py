@@ -437,7 +437,10 @@ def test_team_stats(soccer_api):
 
     team_stats = soccer_api.team_stats(team_id=85)
     for season_stats in team_stats:
-        assert expected == set(season_stats.keys())
+        actual = set(season_stats.keys())
+        logging.info('test season stats entry')
+        logging.info('extra keys: %s, missing keys: %s', actual - expected, expected - actual)
+        assert expected == actual
 
 
 def test_top_scorers(soccer_api):
