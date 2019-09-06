@@ -374,7 +374,10 @@ def test_standings(soccer_api):
 
     for standings_season_stage in standings:
         for standing_entry in standings_season_stage['standings']:
-            assert expected == set(standing_entry.keys())
+            actual = set(standing_entry.keys())
+            logging.info('evaluate a standing entry')
+            logging.info('extra keys: %s, missing keys: %s', actual - expected, expected - actual)
+            assert expected == actual
 
     try:
         standings = soccer_api.standings(season_id=6361, live=True, includes=includes)
