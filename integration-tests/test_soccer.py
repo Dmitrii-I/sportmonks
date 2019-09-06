@@ -559,7 +559,7 @@ def test_season_stages(soccer_api):
     """Test `season_stages` method."""
     # The includes league, season, and results do not work, despite what SportMonks documents.
     season_stages = soccer_api.season_stages(season_id=6361, includes=('fixtures',))
-    expected = {'id', 'name', 'league_id', 'season_id', 'type', 'fixtures'}
+    expected = {'id', 'name', 'league_id', 'season_id', 'type', 'fixtures', 'sort_order', 'has_standings'}
 
     for stage in season_stages:
         actual= set(stage.keys())
