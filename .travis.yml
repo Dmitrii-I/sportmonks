@@ -7,8 +7,9 @@ addons:
     - python3-pip
 
 script:
-  - mv ~/Dmitrii-I/sportmonks ~/sportmonks
-  - bash setup-venv.sh
-  - bash run-unit-tests.sh
-  - bash run-integration-tests.sh
-  - bash run-static-code-checks.sh
+  - cd ~
+  - mv "$TRAVIS_BUILD_DIR" ~/sportmonks
+  - bash ~/sportmonks/setup-venv.sh
+  - bash ~/sportmonks/run-unit-tests.sh
+  - bash ~/sportmonks/run-integration-tests.sh
+  - bash ~/sportmonks/run-static-code-checks.sh
