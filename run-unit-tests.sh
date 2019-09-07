@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-python3 -m unittest discover -s unit-tests -t unit-tests -v
+~/sportmonks/venv/bin/python3 -m unittest discover -s ~/sportmonks/unit-tests -t ~/sportmonks/unit-tests -v
 
