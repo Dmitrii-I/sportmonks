@@ -24,6 +24,9 @@ trap on_interrupt INT
 echo 'This script sets up a virtual environment in which `sportmonks` can be tested and developed'
 
 
+echo 'Delete ~/sportmonks/venv directory'
+rm -rf ~/sportmonks/venv
+
 echo 'Create virtual environment in `venv` directory'
 python3 -m venv venv --copies
 
