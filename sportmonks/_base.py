@@ -91,6 +91,19 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         includes = [i for i in includes]
         return ','.join(sorted(includes))
 
+    @staticmethod
+    def _prepare_params(params: Dict[str, Any]) -> Dict[str, Any]:
+        """Prepare parameters in the format accepted by SportMonks API.
+
+        Prepare parameters in the format accepted by SportMonks API by converting lists to a string of
+        comma-separated values.
+        """
+        for k in params:
+            if isinstance(params[k], list):
+                params[k] = ','.join(str(el) for el in params[k])
+
+        return params
+
     def _http_get(self, endpoint: str, params: Optional[Dict[str, Any]] = None,
                   includes: Optional[Iterable[str]] = None) -> Response:
         """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
@@ -104,14 +117,10 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         url = join(self.base_url, endpoint)
         params = {**self._base_params, **(params or {}), **{'include': includes}}
+        params = self._prepare_params(params=params)
 
         if 'page' not in params:
             params['page'] = 1
-
-        # Lists must be serialized to a comma-separated string
-        for k in params:
-            if isinstance(params[k], list):
-                params[k] = ','.join(str(el) for el in params[k])
 
         log.debug('GET %s, params: %s', url,
                   {k: v if k != 'api_token' else 'API_TOKEN_REDACTED' for k, v in params.items()})
