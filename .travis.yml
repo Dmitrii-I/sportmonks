@@ -1,7 +1,10 @@
-language: python
+dist: bionic
 
-python:
-  - "3.5"
+addons:
+  apt:
+    packages:
+    - python3-venv
+    - python3-pip
 
 script:
   - bash setup-venv.sh
