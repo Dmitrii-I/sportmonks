@@ -21,13 +21,14 @@ trap 'on_error $LINENO' ERR
 trap on_exit EXIT
 trap on_interrupt INT
 
-echo "Run pylava on package code"
-find ~/sportmonks/sportmonks/ -name '*.py' | xargs ~/sportmonks/venv/bin/pylava --options ~/sportmonks/setup.cfg --format pep8 --verbose
-
-echo "Run mypy"
-
-for f in ~/sportmonks/sportmonks/*.py; do
-    echo Check file "$f"
-    mypy --config-file ~/sportmonks/setup.cfg "$f"
+echo "Test code"
+paths="$(find ~/sportmonks/sportmonks -name '*.py')"
+for path in $paths; do
+    echo
+    echo "##############################################################################"
+    echo "Test $path"
+    ~/sportmonks/venv/bin/pylava --verbose --options ~/sportmonks/setup.cfg --format pep8 "$path"
+    ~/sportmonks/venv/bin/mypy --verbose --config-file ~/sportmonks/setup.cfg "$path"
+    echo
 done
 
