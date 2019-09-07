@@ -37,7 +37,7 @@ echo 'Upgrade pip'
 pip install pip --upgrade
 
 echo 'Install from requirements.txt'
-pip install -r requirements.txt
+pip install -r requirements-tests.txt
 
 echo 'Check for broken requirements'
 pip check
