@@ -22,7 +22,7 @@ trap on_exit EXIT
 trap on_interrupt INT
 
 echo "Run pylava"
-find -name '*.py' | xargs pylava --options setup.cfg --format pep8
+find ~/sportmonks/sportmonks/ -name '*.py' | xargs pylava --options setup.cfg --format pep8 --verbose
 
 echo "Run mypy"
 
