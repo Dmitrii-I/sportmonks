@@ -323,10 +323,11 @@ class SoccerApiV2(_base.BaseApiV2):
         """Return stats of a team."""
         log.info('Fetch stats of a team (id=%s)', team_id)
         team_stats = self._http_get(endpoint=join('teams', str(team_id)), includes=['stats'])
-        if isinstance(team_stats, dict):
-            return team_stats['stats']
-        else:
+
+        if not isinstance(team_stats, dict):
             raise TypeError('Expected `dict`, got `%s`' % type(team_stats))
+
+        return team_stats['stats']
 
     def top_scorers(self, season_id: int, includes: Includes = None) -> Response:
         """Return top scorers of a season.
