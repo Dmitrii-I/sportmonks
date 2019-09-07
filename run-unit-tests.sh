@@ -21,5 +21,5 @@ trap 'on_error $LINENO' ERR
 trap on_exit EXIT
 trap on_interrupt INT
 
-~/sportmonks/venv/bin/python3 -m unittest discover -s ~/sportmonks/unit-tests -t ~/sportmonks/unit-tests -v
+PYTHONPATH=~/sportmonks ~/sportmonks/venv/bin/python3 -m unittest discover -s ~/sportmonks/unit-tests -t ~/sportmonks/unit-tests -v
 
