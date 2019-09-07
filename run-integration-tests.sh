@@ -50,5 +50,5 @@ fi
 
 
 echo "Run the tests"
-python3 -m pytest -v --sportmonks-api-key "$sportmonks_api_key" integration-tests
+~/sportmonks/venv/bin/python3 -m pytest -v --sportmonks-api-key "$sportmonks_api_key" ~/sportmonks/integration-tests
 
