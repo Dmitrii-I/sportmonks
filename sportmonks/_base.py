@@ -64,9 +64,9 @@ class BaseApiV2(metaclass=abc.ABCMeta):
                 data = dictionary[k]['data']
 
                 if isinstance(data, list):
-                    for i in range(len(data)):
-                        if isinstance(data[i], dict):
-                            data[i] = self._unnested(data[i])
+                    for i, val in enumerate(data):
+                        if isinstance(val, dict):
+                            data[i] = self._unnested(val)
                 elif isinstance(data, dict):
                     data = self._unnested(data)
 
