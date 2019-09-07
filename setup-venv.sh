@@ -42,3 +42,5 @@ pip install -r requirements-tests.txt
 echo 'Check for broken requirements'
 pip check
 
+echo 'Check that virtual environment is exactly as we expect it'
+sdiff -s ~/sportmonks/expected-pip-freeze-output.txt <(~/sportmonks/venv/bin/pip freeze) > /dev/null
