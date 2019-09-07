@@ -21,7 +21,7 @@ trap 'on_error $LINENO' ERR
 trap on_exit EXIT
 trap on_interrupt INT
 
-echo "Run pylava"
+echo "Run pylava on package code"
 find ~/sportmonks/sportmonks/ -name '*.py' | xargs ~/sportmonks/venv/bin/pylava --options ~/sportmonks/setup.cfg --format pep8 --verbose
 
 echo "Run mypy"
