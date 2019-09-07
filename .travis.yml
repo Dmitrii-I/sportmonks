@@ -7,6 +7,7 @@ addons:
     - python3-pip
 
 script:
+  - mv ~/Dmitrii-I/sportmonks ~/sportmonks
   - bash setup-venv.sh
   - bash run-unit-tests.sh
   - bash run-integration-tests.sh
