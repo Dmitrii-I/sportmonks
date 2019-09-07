@@ -3,10 +3,8 @@ language: python
 python:
   - "3.5"
 
-install:
-  - pip install -r requirements.txt
-
 script:
+  - bash setup-venv.sh
   - bash run-unit-tests.sh
   - bash run-integration-tests.sh
   - bash run-static-code-checks.sh
