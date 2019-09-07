@@ -30,17 +30,14 @@ rm -rf ~/sportmonks/venv
 echo 'Create virtual environment in `venv` directory'
 python3 -m venv venv --copies
 
-echo 'Activate virtual environment'
-source venv/bin/activate
-
 echo 'Upgrade pip'
-pip install pip --upgrade
+~/sportmonks/venv/bin/pip install pip --upgrade
 
 echo 'Install from requirements.txt'
-pip install -r requirements-tests.txt
+~/sportmonks/venv/bin/pip install -r ~/sportmonks/requirements-tests.txt
 
 echo 'Check for broken requirements'
-pip check
+~/sportmonks/venv/bin/pip check
 
 echo 'Check that virtual environment is exactly as we expect it'
 sdiff -s ~/sportmonks/expected-pip-freeze-output.txt <(~/sportmonks/venv/bin/pip freeze) > /dev/null
