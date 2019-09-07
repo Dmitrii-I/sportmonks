@@ -22,12 +22,12 @@ trap on_exit EXIT
 trap on_interrupt INT
 
 echo "Run pylava"
-find ~/sportmonks/sportmonks/ -name '*.py' | xargs pylava --options setup.cfg --format pep8 --verbose
+find ~/sportmonks/sportmonks/ -name '*.py' | xargs ~/sportmonks/venv/bin/pylava --options ~/sportmonks/setup.cfg --format pep8 --verbose
 
 echo "Run mypy"
 
-for f in sportmonks/*.py; do
+for f in ~/sportmonks/sportmonks/*.py; do
     echo Check file "$f"
-    mypy --config-file setup.cfg "$f"
+    mypy --config-file ~/sportmonks/setup.cfg "$f"
 done
 
