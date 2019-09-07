@@ -28,7 +28,7 @@ echo 'Delete ~/sportmonks/venv directory'
 rm -rf ~/sportmonks/venv
 
 echo 'Create virtual environment in `venv` directory'
-python3 -m venv venv --copies
+python3 -m venv ~/sportmonks/venv --copies
 
 echo 'Upgrade pip'
 ~/sportmonks/venv/bin/pip install pip --upgrade
