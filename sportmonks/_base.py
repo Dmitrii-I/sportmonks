@@ -156,22 +156,14 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 class ApiKeyMissingError(Exception):
     """Raised when API key is not provided."""
 
-    pass
-
 
 class BaseUrlMissingError(Exception):
     """Raised when base url is not provided."""
-
-    pass
 
 
 class SportMonksAPIError(Exception):
     """Raised when SportMonks returns an API error."""
 
-    pass
-
 
 class IncompatibleDictionarySchema(Exception):
     """Raised when a dictionary cannot be unnested."""
-
-    pass
