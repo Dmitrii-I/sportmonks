@@ -42,19 +42,24 @@ def test_countries(soccer_api):
 
     SportMonks returns some countries without any continent. Adjust the test for this.
     """
-    for country in soccer_api.countries(includes=('continent', 'leagues')):
+    logging.info('Integration test `countries` method')
+    countries = soccer_api.countries(includes=('continent', 'leagues'))
+    for country in countries:
 
-        # Following countries have no continent associated with them:
+        expected = {'name', 'id', 'extra', 'continent', 'leagues'}
+        actual = set(country.keys())
+
+        # Adjust for some countries not having a continent
         countries_without_continent = {99474, 190324, 1442002, 1884978, 3499960, 8151924, 11311331,
                                        12444275, 14534056, 14566098, 14566636, 15288356, 15629849, 25293454, 32396817,
                                        32533155, 34319255, 37176064}
 
-        expected = {'name', 'id', 'extra', 'continent', 'leagues'}
-
         if country['id'] in countries_without_continent:
-            assert expected - {'continent'} == set(country.keys())
-        else:
-            assert expected == set(country.keys())
+            expected -= {'continent'}
+
+        logging.info('country %s, extra keys: %s, missing keys: %s', country['id'], actual - expected,
+                     expected - actual)
+        assert expected == actual
 
 
 def test_country(soccer_api):
