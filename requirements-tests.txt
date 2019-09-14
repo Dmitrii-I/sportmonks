@@ -1,3 +1,4 @@
+black==19.3b0
 mypy==0.720
 pylava-pylint==0.0.3
 pylava==0.2.2
