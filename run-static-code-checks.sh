@@ -33,6 +33,6 @@ for path in $paths; do
 done
 
 echo "Check that package and tests code is formatted with 'black --line-length 120'"
-black --check --line-length 120 ~/sportmonks/unit-tests
-black --check --line-length 120 ~/sportmonks/sportmonks
-black --check --line-length 120 ~/sportmonks/integration-tests
+~/sportmonks/venv/bin/black --check --line-length 120 ~/sportmonks/unit-tests
+~/sportmonks/venv/bin/black --check --line-length 120 ~/sportmonks/sportmonks
+~/sportmonks/venv/bin/black --check --line-length 120 ~/sportmonks/integration-tests
