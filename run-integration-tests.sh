@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -o nounset      # exit with non-zero status if expansion is attempted on an unset variable
-set -o errexit      # exit immediatelly if a pipeline, a list, or a compound command fails
+set -o errexit      # exit immediately if a pipeline, a list, or a compound command fails
 set -o pipefail     # failures in pipe in the commands before last one, also count as failures
 
 # Trapping non-zero exit codes:
