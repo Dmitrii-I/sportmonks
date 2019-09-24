@@ -23,7 +23,7 @@ pydocstyle==4.0.1
 pyflakes==2.1.1
 pylava==0.2.2
 pylava-pylint==0.0.3
-pylint==2.3.1
+pylint==2.4.0
 pyparsing==2.4.2
 pytest==5.1.2
 pytz==2019.2
@@ -34,7 +34,7 @@ toml==0.10.0
 typed-ast==1.4.0
 typing-extensions==3.7.4
 tzlocal==2.0.0
-urllib3==1.25.4
+urllib3==1.25.6
 wcwidth==0.1.7
 wrapt==1.11.2
 zipp==0.6.0
