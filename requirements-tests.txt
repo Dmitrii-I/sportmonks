@@ -1,3 +1,4 @@
+astroid==2.2.5  # pin because latest (2.3.0) and `mypy` produce broken deps (https://github.com/PyCQA/astroid/issues/696).
 black==19.3b0
 mypy==0.720
 pylava-pylint==0.0.3
