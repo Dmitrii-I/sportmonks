@@ -19,9 +19,7 @@ log = getLogger(__name__)
 class BaseApiV2(metaclass=abc.ABCMeta):
     """Base API class."""
 
-    def __init__(
-        self, base_url: str, api_token: str, tz_name: Optional[str] = None
-    ) -> None:
+    def __init__(self, base_url: str, api_token: str, tz_name: Optional[str] = None) -> None:
         """Initialize API client."""
         self.base_url = base_url
         if not self.base_url:
@@ -40,9 +38,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         self._base_params = {"api_token": self.api_token, "tz": str(self.timezone)}
         self._base_headers = {
             "Accept-Encoding": "gzip, deflate",
-            "User-Agent": "https://github.com/Dmitrii-I/sportmonks {version}".format(
-                version=__version__
-            ),
+            "User-Agent": "https://github.com/Dmitrii-I/sportmonks {version}".format(version=__version__),
         }
 
     def _unnested(self, dictionary: Dict[Any, Any]) -> Dict[Any, Any]:
@@ -63,9 +59,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             if isinstance(dictionary[k], dict) and "data" in dictionary[k]:
 
                 if len(dictionary[k]) > 1:
-                    raise IncompatibleDictionarySchema(
-                        "Cannot flatten a dictionary having keys other than `data`."
-                    )
+                    raise IncompatibleDictionarySchema("Cannot flatten a dictionary having keys other than `data`.")
 
                 data = dictionary[k]["data"]
 
@@ -111,10 +105,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         return params
 
     def _http_get(
-        self,
-        endpoint: str,
-        params: Optional[Dict[str, Any]] = None,
-        includes: Optional[Iterable[str]] = None,
+        self, endpoint: str, params: Optional[Dict[str, Any]] = None, includes: Optional[Iterable[str]] = None
     ) -> Response:
         """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
 
@@ -133,12 +124,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             params["page"] = 1
 
         log.debug(
-            "GET %s, params: %s",
-            url,
-            {
-                k: v if k != "api_token" else "API_TOKEN_REDACTED"
-                for k, v in params.items()
-            },
+            "GET %s, params: %s", url, {k: v if k != "api_token" else "API_TOKEN_REDACTED" for k, v in params.items()}
         )
         self.http_requests_made += 1
         raw_response = requests.get(url=url, params=params, headers=self._base_headers)
@@ -156,26 +142,15 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         if (
             "meta" in response
             and "pagination" in response["meta"]
-            and response["meta"]["pagination"]["current_page"]
-            < response["meta"]["pagination"]["total_pages"]
+            and response["meta"]["pagination"]["current_page"] < response["meta"]["pagination"]["total_pages"]
             and response["meta"]["pagination"]["current_page"] == 1
         ):
-            log.debug(
-                "Response is paginated: %s pages",
-                response["meta"]["pagination"]["total_pages"],
-            )
-            log.debug(
-                "Request pages 2 through %s",
-                response["meta"]["pagination"]["total_pages"],
-            )
+            log.debug("Response is paginated: %s pages", response["meta"]["pagination"]["total_pages"])
+            log.debug("Request pages 2 through %s", response["meta"]["pagination"]["total_pages"])
 
-            for page_number in range(
-                2, response["meta"]["pagination"]["total_pages"] + 1
-            ):
+            for page_number in range(2, response["meta"]["pagination"]["total_pages"] + 1):
                 params["page"] = page_number
-                response_single_page = self._http_get(
-                    endpoint=endpoint, params=params, includes=includes
-                )
+                response_single_page = self._http_get(endpoint=endpoint, params=params, includes=includes)
                 response["data"] += response_single_page
 
         if "data" in response:
@@ -186,10 +161,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         elif isinstance(response, list):
             response = [self._unnested(pr) for pr in response]
         else:
-            msg = (
-                "Unable to flatten data of type `%s`. Type must me a list or dict."
-                % type(response)
-            )
+            msg = "Unable to flatten data of type `%s`. Type must me a list or dict." % type(response)
             log.error(msg)
             raise TypeError(msg)
 

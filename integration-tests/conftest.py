@@ -6,12 +6,7 @@ from sportmonks.soccer import SoccerApiV2
 
 def pytest_addoption(parser):
     """Add option to pass SportMonks API key."""
-    parser.addoption(
-        "--sportmonks-api-key",
-        action="store",
-        default="type1",
-        help="Provide SportMonks API key",
-    )
+    parser.addoption("--sportmonks-api-key", action="store", default="type1", help="Provide SportMonks API key")
 
 
 @pytest.fixture(scope="module")
