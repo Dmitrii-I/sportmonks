@@ -22,7 +22,13 @@ logging.basicConfig(stream=stdout, level=logging.INFO)
 def test_includes_param_can_be_any_iterable(soccer_api):
     """Test that parameter `includes` can be any iterable."""
     iterables = [["countries"], {"countries"}, ("countries",), "countries"]
-    assert all(map(lambda x: soccer_api.continent(1, iterables[0]) == soccer_api.continent(1, x), iterables[1:]))
+    assert all(
+        map(
+            lambda x: soccer_api.continent(1, iterables[0])
+            == soccer_api.continent(1, x),
+            iterables[1:],
+        )
+    )
 
 
 def test_continents(soccer_api):
@@ -76,7 +82,10 @@ def test_countries(soccer_api):
             expected -= {"continent"}
 
         logging.info(
-            "country %s, extra keys: %s, missing keys: %s", country["id"], actual - expected, expected - actual
+            "country %s, extra keys: %s, missing keys: %s",
+            country["id"],
+            actual - expected,
+            expected - actual,
         )
         assert expected == actual
 
@@ -122,7 +131,12 @@ def test_leagues(soccer_api):
 
     for league in leagues:
         actual = set(league.keys())
-        logging.info("League %s, extra keys: %s, missing keys: %s", league["id"], actual - expected, expected - actual)
+        logging.info(
+            "League %s, extra keys: %s, missing keys: %s",
+            league["id"],
+            actual - expected,
+            expected - actual,
+        )
         assert expected == set(league.keys())
 
 
@@ -148,13 +162,23 @@ def test_league(soccer_api):
     } | includes
     actual = set(premiership.keys())
 
-    logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+    logging.info(
+        "extra keys: %s, missing keys: %s", actual - expected, expected - actual
+    )
     assert expected == actual
 
 
 def test_seasons(soccer_api):
     """Test `seasons` method."""
-    includes = ("league", "stages", "rounds", "fixtures", "upcoming", "results", "groups")
+    includes = (
+        "league",
+        "stages",
+        "rounds",
+        "fixtures",
+        "upcoming",
+        "results",
+        "groups",
+    )
     seasons = soccer_api.seasons(includes=includes)
 
     for season in seasons:
@@ -163,7 +187,15 @@ def test_seasons(soccer_api):
 
 def test_season(soccer_api):
     """Test `season` method."""
-    includes = ("league", "stages", "rounds", "fixtures", "upcoming", "results", "groups")
+    includes = (
+        "league",
+        "stages",
+        "rounds",
+        "fixtures",
+        "upcoming",
+        "results",
+        "groups",
+    )
     season = soccer_api.season(season_id=6361, includes=includes)
 
     assert season["name"] == "2017/2018"
@@ -185,9 +217,38 @@ def test_season_results(soccer_api):
     # The `group` include is not applicable for season with ID 6361 because it is not a tournament-type season,
     # so it is omitted in this test.
     includes_tuples = [
-        ("localTeam", "visitorTeam", "substitutions", "goals", "cards", "other", "corners", "lineup", "bench"),
-        ("sidelined", "stats", "comments", "tvstations", "highlights", "league", "season", "round", "stage"),
-        ("referee", "events", "venue", "flatOdds", "inplay", "localCoach", "visitorCoach", "trends"),
+        (
+            "localTeam",
+            "visitorTeam",
+            "substitutions",
+            "goals",
+            "cards",
+            "other",
+            "corners",
+            "lineup",
+            "bench",
+        ),
+        (
+            "sidelined",
+            "stats",
+            "comments",
+            "tvstations",
+            "highlights",
+            "league",
+            "season",
+            "round",
+            "stage",
+        ),
+        (
+            "referee",
+            "events",
+            "venue",
+            "flatOdds",
+            "inplay",
+            "localCoach",
+            "visitorCoach",
+            "trends",
+        ),
         ("odds",),
     ]
 
@@ -255,10 +316,14 @@ def test_season_results(soccer_api):
     )
 
     for includes_tuple in includes_tuples:
-        season_results = soccer_api.season_results(season_id=759, includes=includes_tuple)
+        season_results = soccer_api.season_results(
+            season_id=759, includes=includes_tuple
+        )
         for result in season_results:
 
-            missing_includes = (set(includes_tuple) - known_missing_includes[result["id"]]) - set(result.keys())
+            missing_includes = (
+                set(includes_tuple) - known_missing_includes[result["id"]]
+            ) - set(result.keys())
             assert missing_includes == set()
 
             assert expected_non_includes <= set(result.keys())
@@ -326,7 +391,9 @@ def test_fixtures(soccer_api):
         "localCoach",
         "visitorCoach",
     )
-    fixtures = soccer_api.fixtures(date(2018, 1, 10), date(2018, 2, 10), [271], includes=includes)
+    fixtures = soccer_api.fixtures(
+        date(2018, 1, 10), date(2018, 2, 10), [271], includes=includes
+    )
 
     for fixture in fixtures:
         assert set(includes) <= set(fixture.keys())
@@ -391,7 +458,10 @@ def test_team_fixtures(soccer_api):
     )
 
     fixtures = soccer_api.team_fixtures(
-        start_date=date(2018, 1, 1), end_date=date(2018, 4, 1), team_id=85, includes=includes
+        start_date=date(2018, 1, 1),
+        end_date=date(2018, 4, 1),
+        team_id=85,
+        includes=includes,
     )
 
     assert len(fixtures) == 7
@@ -409,7 +479,15 @@ def test_fixtures_today(soccer_api):
     return value means we cannot know what includes will be attached to each returned fixture if we request all of
     them. Therefore we request a limited set of includes, one which we assume is available for any fixture.
     """
-    essential_includes = ("localTeam", "visitorTeam", "league", "season", "round", "stage", "venue")
+    essential_includes = (
+        "localTeam",
+        "visitorTeam",
+        "league",
+        "season",
+        "round",
+        "stage",
+        "venue",
+    )
     fixtures = soccer_api.fixtures_today(includes=essential_includes)
     assert isinstance(fixtures, list)
 
@@ -451,7 +529,15 @@ def test_fixtures_in_play(soccer_api):
     return value means we cannot know what includes will be attached to each returned fixture if we request all of
     them. Therefore we request a limited set of includes, one which we assume is available for any fixture.
     """
-    essential_includes = ("localTeam", "visitorTeam", "league", "season", "round", "stage", "venue")
+    essential_includes = (
+        "localTeam",
+        "visitorTeam",
+        "league",
+        "season",
+        "round",
+        "stage",
+        "venue",
+    )
     fixtures = soccer_api.fixtures_in_play(includes=essential_includes)
     assert isinstance(fixtures, list)
 
@@ -549,7 +635,15 @@ def test_fixture(soccer_api):
 
 def test_commentaries(soccer_api):
     """Test `commentaries` method."""
-    expected = {"comment", "extra_minute", "fixture_id", "goal", "important", "minute", "order"}
+    expected = {
+        "comment",
+        "extra_minute",
+        "fixture_id",
+        "goal",
+        "important",
+        "minute",
+        "order",
+    }
     commentaries = soccer_api.commentaries(1871916)
 
     for comment in commentaries:
@@ -562,19 +656,32 @@ def test_video_highlights(soccer_api):
     highlights_without_fixture_include = {10324789, 10324789, 10324402}
 
     for hl in highlights:
-        expected = {"created_at", "fixture_id", "fixture", "location", "event_id", "type"}
+        expected = {
+            "created_at",
+            "fixture_id",
+            "fixture",
+            "location",
+            "event_id",
+            "type",
+        }
         if hl["fixture_id"] in highlights_without_fixture_include:
             expected = expected - {"fixture"}
 
         actual = set(hl.keys())
-        logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+        logging.info(
+            "extra keys: %s, missing keys: %s", actual - expected, expected - actual
+        )
         assert expected == actual
 
     fixture_highlights = soccer_api.video_highlights(fixture_id=218832)
     for hl in fixture_highlights:
         expected = {"created_at", "fixture_id", "location", "event_id", "type"}
         actual = set(hl.keys())
-        logging.info("highlights fixture 218832 extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+        logging.info(
+            "highlights fixture 218832 extra keys: %s, missing keys: %s",
+            actual - expected,
+            expected - actual,
+        )
         assert expected == actual
 
 
@@ -612,9 +719,18 @@ def test_head_to_head_fixtures(soccer_api):
         "winning_odds_calculated",
     }
 
-    essential_includes = ("localTeam", "visitorTeam", "league", "season", "round", "stage")
+    essential_includes = (
+        "localTeam",
+        "visitorTeam",
+        "league",
+        "season",
+        "round",
+        "stage",
+    )
 
-    fixtures = soccer_api.head_to_head_fixtures(team_ids={85, 86}, includes=essential_includes)
+    fixtures = soccer_api.head_to_head_fixtures(
+        team_ids={85, 86}, includes=essential_includes
+    )
 
     for fixture in fixtures:
         assert set(essential_includes) <= set(fixture.keys())
@@ -648,13 +764,18 @@ def test_standings(soccer_api):
         for standing_entry in standings_season_stage["standings"]:
             actual = set(standing_entry.keys())
             logging.info("evaluate a standing entry")
-            logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+            logging.info(
+                "extra keys: %s, missing keys: %s", actual - expected, expected - actual
+            )
             assert expected == actual
 
     try:
         standings = soccer_api.standings(season_id=6361, live=True, includes=includes)
     except sportmonks._base.SportMonksAPIError as e:
-        if str(e) == "Insufficient Privileges! Your current plan doesn't allow access to this section!":
+        if (
+            str(e)
+            == "Insufficient Privileges! Your current plan doesn't allow access to this section!"
+        ):
             return
         raise
 
@@ -779,14 +900,16 @@ def test_team_stats(soccer_api):
         "win",
         "btts",
         "goal_line",
-        "goals_conceded_minutes"
+        "goals_conceded_minutes",
     }
 
     team_stats = soccer_api.team_stats(team_id=85)
     for season_stats in team_stats:
         actual = set(season_stats.keys())
         logging.info("test season stats entry")
-        logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+        logging.info(
+            "extra keys: %s, missing keys: %s", actual - expected, expected - actual
+        )
         assert expected == actual
 
 
@@ -828,7 +951,16 @@ def test_top_scorers(soccer_api):
 
 def test_venue(soccer_api):
     """Test `venue` method."""
-    expected = {"address", "capacity", "city", "id", "image_path", "name", "surface", "coordinates"}
+    expected = {
+        "address",
+        "capacity",
+        "city",
+        "id",
+        "image_path",
+        "name",
+        "surface",
+        "coordinates",
+    }
     assert expected == set(soccer_api.venue(venue_id=206).keys())
 
 
@@ -865,7 +997,10 @@ def test_in_play_odds(soccer_api):
     try:
         odds = soccer_api.in_play_odds(fixture_id=1625164)
     except sportmonks._base.SportMonksAPIError as e:
-        if str(e) == "Insufficient Privileges! Your current plan doesn't allow access to this section!":
+        if (
+            str(e)
+            == "Insufficient Privileges! Your current plan doesn't allow access to this section!"
+        ):
             return
         raise
 
@@ -945,11 +1080,25 @@ def test_season_stages(soccer_api):
     """Test `season_stages` method."""
     # The includes league, season, and results do not work, despite what SportMonks documents.
     season_stages = soccer_api.season_stages(season_id=6361, includes=("fixtures",))
-    expected = {"id", "name", "league_id", "season_id", "type", "fixtures", "sort_order", "has_standings"}
+    expected = {
+        "id",
+        "name",
+        "league_id",
+        "season_id",
+        "type",
+        "fixtures",
+        "sort_order",
+        "has_standings",
+    }
 
     for stage in season_stages:
         actual = set(stage.keys())
-        logging.info("stage %s, extra keys: %s, missing keys: %s", stage["id"], actual - expected, expected - actual)
+        logging.info(
+            "stage %s, extra keys: %s, missing keys: %s",
+            stage["id"],
+            actual - expected,
+            expected - actual,
+        )
         assert expected == actual
 
 
@@ -957,9 +1106,22 @@ def test_stage(soccer_api):
     """Test `stage` method."""
     # The includes league, season, and results do not work, despite what SportMonks documents.
     stage = soccer_api.stage(stage_id=48048, includes=("fixtures",))
-    expected = {"id", "name", "league_id", "season_id", "type", "fixtures", "sort_order", "has_standings"}
+    expected = {
+        "id",
+        "name",
+        "league_id",
+        "season_id",
+        "type",
+        "fixtures",
+        "sort_order",
+        "has_standings",
+    }
     actual = set(stage.keys())
-    logging.info("stage 48048, extra keys: %s, missing keys %s", actual - expected, expected - actual)
+    logging.info(
+        "stage 48048, extra keys: %s, missing keys %s",
+        actual - expected,
+        expected - actual,
+    )
     assert expected == actual
 
 
@@ -978,7 +1140,16 @@ def test_fixture_tv_stations(soccer_api):
 def test_season_venues(soccer_api):
     """Test `season_venues` method."""
     venues = soccer_api.season_venues(season_id=6361)
-    expected_keys = {"address", "capacity", "city", "id", "image_path", "name", "surface", "coordinates"}
+    expected_keys = {
+        "address",
+        "capacity",
+        "city",
+        "id",
+        "image_path",
+        "name",
+        "surface",
+        "coordinates",
+    }
 
     for venue in venues:
         assert expected_keys == set(venue.keys())
@@ -999,7 +1170,10 @@ def test_coach(soccer_api):
     try:
         coach = soccer_api.coach(coach_id=523962)
     except sportmonks._base.SportMonksAPIError as e:
-        if str(e) == "Insufficient Privileges! Your current plan doesn't allow access to this section!":
+        if (
+            str(e)
+            == "Insufficient Privileges! Your current plan doesn't allow access to this section!"
+        ):
             return
         raise
 

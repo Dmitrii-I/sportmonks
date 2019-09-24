@@ -8,7 +8,12 @@ import pytz
 import tzlocal
 
 from sportmonks import __version__
-from sportmonks._base import BaseApiV2, SportMonksAPIError, BaseUrlMissingError, ApiKeyMissingError
+from sportmonks._base import (
+    BaseApiV2,
+    SportMonksAPIError,
+    BaseUrlMissingError,
+    ApiKeyMissingError,
+)
 
 
 class TestBaseApiV20(unittest.TestCase):
@@ -20,12 +25,16 @@ class TestBaseApiV20(unittest.TestCase):
 
     def test_init_raises_exceptions(self):
         """Test that `__init__` raises excepions when base url or API key are missing."""
-        self.assertRaises(BaseUrlMissingError, BaseApiV2, base_url=None, api_token="foo")
+        self.assertRaises(
+            BaseUrlMissingError, BaseApiV2, base_url=None, api_token="foo"
+        )
         self.assertRaises(ApiKeyMissingError, BaseApiV2, base_url="foo", api_token=None)
 
     def test_init_sets_timezone(self):
         """Test that `__init__` sets timezone."""
-        api = BaseApiV2(base_url="http://www.foo.com", api_token="foo", tz_name="Europe/Amsterdam")
+        api = BaseApiV2(
+            base_url="http://www.foo.com", api_token="foo", tz_name="Europe/Amsterdam"
+        )
         self.assertEqual(pytz.timezone("Europe/Amsterdam"), api.timezone)
 
         api = BaseApiV2(base_url="http://www.foo.com", api_token="foo")
@@ -34,7 +43,9 @@ class TestBaseApiV20(unittest.TestCase):
     def test_init_sets_base_params(self):
         """Test that `__init__` sets base params."""
         api = BaseApiV2(base_url="foo", api_token="bar", tz_name="Australia/Sydney")
-        self.assertEqual({"api_token": "bar", "tz": "Australia/Sydney"}, api._base_params)
+        self.assertEqual(
+            {"api_token": "bar", "tz": "Australia/Sydney"}, api._base_params
+        )
 
     @patch("requests.get")
     def test_http_get_args_building(self, mocked_get):
@@ -45,14 +56,24 @@ class TestBaseApiV20(unittest.TestCase):
         mocked_response.json.return_value = {"response": "foo"}
         mocked_get.return_value = mocked_response
 
-        response = api._http_get(endpoint="some_endpoint", params={"param": [1, 2]}, includes=["foo", "bar"])
+        response = api._http_get(
+            endpoint="some_endpoint", params={"param": [1, 2]}, includes=["foo", "bar"]
+        )
         self.assertEqual({"response": "foo"}, response)
         mocked_get.assert_called_once_with(
             url="bar/some_endpoint",
-            params={"api_token": "foo", "tz": "UTC", "param": "1,2", "include": "bar,foo", "page": 1},
+            params={
+                "api_token": "foo",
+                "tz": "UTC",
+                "param": "1,2",
+                "include": "bar,foo",
+                "page": 1,
+            },
             headers={
                 "Accept-Encoding": "gzip, deflate",
-                "User-Agent": "https://github.com/Dmitrii-I/sportmonks {version}".format(version=__version__),
+                "User-Agent": "https://github.com/Dmitrii-I/sportmonks {version}".format(
+                    version=__version__
+                ),
             },
         )
         self.assertEqual(1, api.http_requests_made)
@@ -73,7 +94,9 @@ class TestBaseApiV20(unittest.TestCase):
             mocked_response.json.return_value = {"response": "foo"}
             mocked_get.return_value = mocked_response
 
-            response = api._http_get(endpoint="some_endpoint", params={"param": [1, 2]}, includes=includes)
+            response = api._http_get(
+                endpoint="some_endpoint", params={"param": [1, 2]}, includes=includes
+            )
             self.assertEqual({"response": "foo"}, response)
             mocked_get.assert_called_with(
                 url="bar/some_endpoint",
@@ -86,7 +109,9 @@ class TestBaseApiV20(unittest.TestCase):
                 },
                 headers={
                     "Accept-Encoding": "gzip, deflate",
-                    "User-Agent": "https://github.com/Dmitrii-I/sportmonks {version}".format(version=__version__),
+                    "User-Agent": "https://github.com/Dmitrii-I/sportmonks {version}".format(
+                        version=__version__
+                    ),
                 },
             )
 
@@ -128,7 +153,9 @@ class TestBaseApiV20(unittest.TestCase):
             response.request = Mock()
             response.json.return_value = {
                 "data": [{"foo": "page_" + str(params["page"])}],
-                "meta": {"pagination": {"current_page": params["page"], "total_pages": 3}},
+                "meta": {
+                    "pagination": {"current_page": params["page"], "total_pages": 3}
+                },
             }
 
             return response
@@ -137,7 +164,9 @@ class TestBaseApiV20(unittest.TestCase):
 
         api = BaseApiV2(base_url="gg", api_token="foo")
         combined_response = api._http_get(endpoint="foo")
-        self.assertEqual([{"foo": "page_1"}, {"foo": "page_2"}, {"foo": "page_3"}], combined_response)
+        self.assertEqual(
+            [{"foo": "page_1"}, {"foo": "page_2"}, {"foo": "page_3"}], combined_response
+        )
 
     def test_unnested_simple(self):
         """Test `_unnest` with a simple case."""
@@ -150,7 +179,12 @@ class TestBaseApiV20(unittest.TestCase):
 
     def test_unnested_complex(self):
         """Test `_unnest` with a complex case."""
-        inner = {"p": 1, "q": [1, 2, 3], "r": "foo", "s": {"data": {"x": 1, "z": "foo"}}}
+        inner = {
+            "p": 1,
+            "q": [1, 2, 3],
+            "r": "foo",
+            "s": {"data": {"x": 1, "z": "foo"}},
+        }
 
         outer = {"a": 1, "b": [1, 2, 3], "c": "foo", "d": {"data": inner}}
 
@@ -172,7 +206,12 @@ class TestBaseApiV20(unittest.TestCase):
             {"a": 3, "b": {"data": {"c": "foobar"}}},
         ]
 
-        inner = {"p": 1, "q": [1, 2, 3], "r": "foo", "s": {"data": {"x": 1, "z": "foo", "y": {"data": inner_inner}}}}
+        inner = {
+            "p": 1,
+            "q": [1, 2, 3],
+            "r": "foo",
+            "s": {"data": {"x": 1, "z": "foo", "y": {"data": inner_inner}}},
+        }
 
         outer = {"a": 1, "b": [1, 2, 3], "c": "foo", "d": {"data": inner}}
 
@@ -187,7 +226,11 @@ class TestBaseApiV20(unittest.TestCase):
                 "s": {
                     "x": 1,
                     "z": "foo",
-                    "y": [{"a": 1, "b": {"c": "foo"}}, {"a": 2, "b": {"c": "bar"}}, {"a": 3, "b": {"c": "foobar"}}],
+                    "y": [
+                        {"a": 1, "b": {"c": "foo"}},
+                        {"a": 2, "b": {"c": "bar"}},
+                        {"a": 3, "b": {"c": "foobar"}},
+                    ],
                 },
             },
         }
