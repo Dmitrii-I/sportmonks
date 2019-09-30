@@ -88,7 +88,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         if isinstance(includes, str):
             includes = [includes]
 
-        includes = [i for i in includes]
+        includes = list(includes)
         return ",".join(sorted(includes))
 
     @staticmethod
