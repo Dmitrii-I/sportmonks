@@ -46,7 +46,7 @@ def test_countries(soccer_api):
     countries = soccer_api.countries(includes=("continent", "leagues"))
     for country in countries:
 
-        expected = {"name", "id", "extra", "continent", "leagues"}
+        expected = {"name", "id", "extra", "continent", "leagues", "image_path"}
         actual = set(country.keys())
 
         # Adjust for some countries not having a continent
