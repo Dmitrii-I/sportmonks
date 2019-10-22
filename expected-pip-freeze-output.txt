@@ -1,5 +1,5 @@
 appdirs==1.4.3
-astroid==2.3.1
+astroid==2.3.2
 atomicwrites==1.3.0
 attrs==19.3.0
 black==19.3b0
@@ -13,7 +13,7 @@ lazy-object-proxy==1.4.2
 mccabe==0.6.1
 more-itertools==7.2.0
 mypy==0.720
-mypy-extensions==0.4.2
+mypy-extensions==0.4.3
 packaging==19.2
 pkg-resources==0.0.0
 pluggy==0.13.0
@@ -23,7 +23,7 @@ pydocstyle==4.0.1
 pyflakes==2.1.1
 pylava==0.2.2
 pylava-pylint==0.0.3
-pylint==2.4.2
+pylint==2.4.3
 pyparsing==2.4.2
 pytest==5.1.2
 pytz==2019.3
