@@ -8,8 +8,11 @@ sportmonks
 .. image:: https://badge.fury.io/py/sportmonks.svg
        :target: https://badge.fury.io/py/sportmonks
 
-.. image:: https://readthedocs.org/projects/sportmonks/badge
-   :target: https://sportmonks.readthedocs.io
+
+.. image:: https://readthedocs.org/projects/sportmonks/badge/?version=1.0.0
+   :target: https://sportmonks.readthedocs.io/en/1.0.0/?badge=1.0.0
+
+
 
 `sportmonks` is a Python 3.5+ package that implements `SportMonks <https://www.sportmonks.com>`__ API. While SportMonks (the company) offers data for various sports, this package implements only soccer. There are no plans to implement other sports.
 
@@ -44,7 +47,7 @@ Print today's games:
 Installation
 ============
 
-Latest released version can be installed with: 
+Latest released version can be installed with:
 
 .. code-block:: shell
 
@@ -53,7 +56,7 @@ Latest released version can be installed with:
 Latest development version can be installed with:
 
 .. code-block:: shell
-   
+
     git clone https://www.github.com/Dmitrii-I/sportmonks.git
     cd sportmonks
     pip install ./
