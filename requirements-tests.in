@@ -1,0 +1,7 @@
+black==19.3b0
+mypy==0.720
+pylava==0.2.2
+pytest==5.1.2
+pytz==2019.3
+requests==2.22.0
+tzlocal==2.0.0

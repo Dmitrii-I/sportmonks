@@ -31,13 +31,14 @@ echo 'Create virtual environment in `venv` directory'
 python3 -m venv ~/sportmonks/venv --copies
 
 echo 'Upgrade pip'
-~/sportmonks/venv/bin/pip install pip --upgrade
+~/sportmonks/venv/bin/pip install pip==19.3.1
+
+echo 'Install pip-tools'
+~/sportmonks/venv/bin/pip install pip-tools==4.2.0
 
 echo 'Install from requirements.txt'
-~/sportmonks/venv/bin/pip install -r ~/sportmonks/requirements-tests.txt
+~/sportmonks/venv/bin/pip-sync ~/sportmonks/requirements-tests.txt
 
 echo 'Check for broken requirements'
 ~/sportmonks/venv/bin/pip check
 
-echo 'Check that virtual environment is exactly as we expect it'
-sdiff -s ~/sportmonks/expected-pip-freeze-output.txt <(~/sportmonks/venv/bin/pip freeze) > /dev/null
