@@ -395,10 +395,14 @@ class SoccerApiV2(_base.BaseApiV2):
         log.info("Fetched %s in-play odds", len(in_play_odds))
         return in_play_odds
 
-    def player(self, player_id: int) -> Response:
-        """Return a player."""
-        log.info("Fetch player, id=%s", player_id)
-        return self._http_get(endpoint=join("players", str(player_id)))
+    def player(self, player_id: int, includes: Includes = None) -> Response:
+        """Return a player.
+
+        Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
+        Some of the valid objects are: `position`, `team`, `stats`, `trophies`, `sidelined`, `transfers`.
+        """
+        log.info("Fetch player, id=%s, includes=%s", player_id, includes)
+        return self._http_get(endpoint=join("players", str(player_id)), includes=includes)
 
     def squad(self, season_id: int, team_id: int, includes: Includes = None) -> Response:
         """Return a squad. A squad is a set of players that played for a team during a season.
