@@ -1,5 +1,4 @@
 """The `soccer` module implements the `SportMonks soccer HTTP API v2.0.
-
 <https://www.sportmonks.com/sports/soccer/documentation>`__
 """
 
