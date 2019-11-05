@@ -877,7 +877,7 @@ def test_in_play_odds(soccer_api):
 
 def test_player(soccer_api):
     """Test `player` method."""
-    expected_keys = {
+    expected = {
         "birthcountry",
         "birthdate",
         "birthplace",
@@ -893,8 +893,15 @@ def test_player(soccer_api):
         "position_id",
         "team_id",
         "weight",
+        "team",
+        "position",
+        "stats",
+        "trophies"
     }
-    assert set(soccer_api.player(player_id=579).keys()) == expected_keys
+
+    actual = set(soccer_api.player(player_id=579, includes=["team", "position", "stats", "trophies"]).keys())
+    logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+    assert expected == actual
 
 
 def test_bookmakers(soccer_api):

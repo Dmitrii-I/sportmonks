@@ -242,8 +242,8 @@ class TestSoccerApiV2(unittest.TestCase):
         """Test `player` method."""
         api = MagicMock()()
         # noinspection PyCallByClass, PyTypeChecker
-        SoccerApiV2.player(api, player_id=1)
-        api._http_get.assert_called_once_with(endpoint="players/1")
+        SoccerApiV2.player(api, player_id=1, includes=["foo", "bar"])
+        api._http_get.assert_called_once_with(endpoint="players/1", includes=["foo", "bar"])
 
     def test_bookmakers(self):
         """Test `bookmakers` method."""
