@@ -780,6 +780,8 @@ def test_team_stats(soccer_api):
         "btts",
         "goal_line",
         "goals_conceded_minutes",
+        "avg_corners",
+        "total_corners",
     }
 
     team_stats = soccer_api.team_stats(team_id=85)
