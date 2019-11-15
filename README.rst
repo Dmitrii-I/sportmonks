@@ -9,8 +9,8 @@ sportmonks
        :target: https://badge.fury.io/py/sportmonks
 
 
-.. image:: https://readthedocs.org/projects/sportmonks/badge/?version=1.0.0
-   :target: https://sportmonks.readthedocs.io/en/1.0.0/?badge=1.0.0
+.. image:: https://readthedocs.org/projects/sportmonks/badge/?version=1.1.0
+   :target: https://sportmonks.readthedocs.io/en/1.1.0/?badge=1.1.0
 
 
 
