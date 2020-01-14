@@ -899,7 +899,7 @@ def test_player(soccer_api):
         "position",
         "stats",
         "trophies",
-        "display_name"
+        "display_name",
     }
 
     actual = set(soccer_api.player(player_id=579, includes=["team", "position", "stats", "trophies"]).keys())
