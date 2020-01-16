@@ -20,3 +20,14 @@ jobs:
 
     - name: setup virtual environment
       run: bash setup-venv.sh
+
+    - name: run static code checks
+      run: bash ~/sportmonks/run-static-code-checks.sh
+
+    - name: run unit tests
+      run: bash ~/sportmonks/run-unit-tests.sh
+
+    - name: run integration tests
+      env:
+        SPORTMONKS_API_KEY: ${{ secrets.SPORTMONKS_API_KEY }}
+      run: bash ~/sportmonks/run-integration-tests.sh
