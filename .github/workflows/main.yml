@@ -1,0 +1,14 @@
+name: Python application
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+
+    - name: checkout repository
+      uses: actions/checkout@master
+
+    - name: setup virtual environment
+      run: bash ${GITHUB_WORKSPACE}/sportmonks/setup-venv.sh
