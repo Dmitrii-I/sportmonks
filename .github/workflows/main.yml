@@ -10,5 +10,10 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@master
 
+    - name: install APT packages
+      run: |
+        apt-get install python3-venv
+        apt-get install python3-pip
+
     - name: setup virtual environment
       run: bash setup-venv.sh
