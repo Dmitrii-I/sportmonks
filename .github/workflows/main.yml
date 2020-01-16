@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: create symlink
-      run: ln -s ./ ~/sportmonks
+      run: ln -s $(pwd) ~/sportmonks
 
     - name: install APT packages
       run: |
