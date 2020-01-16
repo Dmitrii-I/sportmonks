@@ -11,4 +11,4 @@ jobs:
       uses: actions/checkout@master
 
     - name: setup virtual environment
-      run: bash ${GITHUB_WORKSPACE}/sportmonks/setup-venv.sh
+      run: bash setup-venv.sh
