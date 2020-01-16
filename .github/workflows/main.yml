@@ -10,6 +10,9 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@master
 
+    - name: create symlink
+      run: ln -s ./ ~/sportmonks
+
     - name: install APT packages
       run: |
         sudo apt-get install python3-venv
