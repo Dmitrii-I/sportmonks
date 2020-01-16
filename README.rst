@@ -1,8 +1,8 @@
 sportmonks
 ==========
 
-.. image:: https://github.com/Dmitrii-I/sportmonks/workflows/.github/workflows/tests.yml/badge.svg
-       :target: https://github.com/Dmitrii-I/sportmonks/workflows/.github/workflows/tests.yml/badge.svg
+.. image:: https://github.com/Dmitrii-I/sportmonks/workflows/tests/badge.svg
+       :target: https://github.com/Dmitrii-I/sportmonks/actions?query=workflow%3Atests
 
 
 .. image:: https://badge.fury.io/py/sportmonks.svg
