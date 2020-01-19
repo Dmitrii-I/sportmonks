@@ -3,7 +3,7 @@ name: tests
 on: [push]
 
 jobs:
-  build:
+  tests-ubuntu-18:
     runs-on: ubuntu-18.04
     steps:
 
