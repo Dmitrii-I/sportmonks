@@ -31,3 +31,17 @@ jobs:
       env:
         SPORTMONKS_API_KEY: ${{ secrets.SPORTMONKS_API_KEY }}
       run: bash ~/sportmonks/run-integration-tests.sh
+
+  tests-windows-2019:
+    runs-on: windows-2019
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@master
+
+      - name: create symlink
+        shell: bash
+        run: ln -s $(pwd) ~/sportmonks
+
+      - name: setup virtual environment
+        shell: bash
+        run: bash setup-venv.sh
