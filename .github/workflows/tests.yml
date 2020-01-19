@@ -38,6 +38,11 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@master
 
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.7.5'
+          architecture: 'x64'
+
       - name: create symlink
         shell: bash
         run: ln -s $(pwd) ~/sportmonks
