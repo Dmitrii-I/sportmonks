@@ -47,6 +47,6 @@ jobs:
         shell: bash
         run: ln -s $(pwd) ~/sportmonks
 
-      - name: setup virtual environment
-        shell: bash
-        run: bash setup-venv.sh
+      - name: Test python
+        shell: powershell
+        run: python --version
