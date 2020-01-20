@@ -52,4 +52,4 @@ jobs:
         run: |
           python --version
           Get-ChildItem
-          $Env:Path -split ";"
+          $Env:Path
