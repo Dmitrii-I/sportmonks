@@ -49,4 +49,6 @@ jobs:
 
       - name: Test python
         shell: powershell
-        run: python --version
+        run: |
+          python --version
+          Get-ChildItem
