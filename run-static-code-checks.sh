@@ -24,6 +24,7 @@ trap on_interrupt INT
 source ~/sportmonks/functions.sh
 
 echo "Activate virtual environment"
+set_environment_variables
 activate_virtual_environment
 
 echo "Test code"
