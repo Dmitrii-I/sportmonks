@@ -22,7 +22,7 @@ markupsafe==1.1.1         # via jinja2
 mccabe==0.6.1             # via pylava
 more-itertools==7.2.0     # via pytest, zipp
 mypy-extensions==0.4.3    # via mypy
-mypy==0.720
+mypy==0.761
 packaging==19.2           # via pytest, sphinx
 pluggy==0.13.0            # via pytest
 py==1.8.0                 # via pytest
@@ -54,4 +54,4 @@ wcwidth==0.1.7            # via pytest
 zipp==0.6.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.6.0        # via sphinx
+# setuptools
