@@ -3,8 +3,9 @@
 import abc
 
 from logging import getLogger
-from typing import Dict, Iterable, Optional, Any
+from typing import Dict, Iterable, Optional, Any, Union, List
 from urllib.parse import urljoin
+from datetime import date
 
 import requests
 import pytz
@@ -14,6 +15,9 @@ from sportmonks import __version__
 from sportmonks._types import Response
 
 log = getLogger(__name__)
+
+EndpointPart = Union[str, date, int]
+EndpointParts = Union[EndpointPart, List[EndpointPart]]
 
 
 class BaseApiV2(metaclass=abc.ABCMeta):
@@ -104,8 +108,19 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
         return params
 
+    def _full_url(self, url_parts: EndpointParts) -> str:
+        """Return URL built from the base part and other parts (which are not the query string)."""
+        url_parts = [url_parts] if not isinstance(url_parts, list) else url_parts
+
+        full_url = self.base_url.rstrip("/") + "/"
+        while url_parts:
+            full_url = full_url.rstrip("/") + "/"
+            part = str(url_parts.pop(0)).rstrip("/")
+            full_url = urljoin(full_url, part)
+        return full_url
+
     def _http_get(
-        self, endpoint: str, params: Optional[Dict[str, Any]] = None, includes: Optional[Iterable[str]] = None
+        self, endpoint: EndpointParts, params: Optional[Dict[str, Any]] = None, includes: Optional[Iterable[str]] = None
     ) -> Response:
         """Return parsed response of an HTTP GET request. If the response is paginated, then all pages are returned.
 
@@ -116,7 +131,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         """
         includes = self._prepare_includes(includes=includes)
 
-        url = urljoin(self.base_url, endpoint)
+        url = self._full_url(url_parts=endpoint)
         params = {**self._base_params, **(params or {}), **{"include": includes}}
         params = self._prepare_params(params=params)
 
