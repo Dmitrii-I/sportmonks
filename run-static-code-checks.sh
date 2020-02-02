@@ -28,7 +28,7 @@ set_environment_variables
 activate_virtual_environment
 
 echo "Test code"
-paths="$(find ~/sportmonks/sportmonks -name '*.py')"
+paths="$(find ~/sportmonks/sportmonks -name \"*.py\")"
 for path in $paths; do
     echo
     echo "##############################################################################"
