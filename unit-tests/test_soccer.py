@@ -270,7 +270,7 @@ class TestSoccerApiV2(unittest.TestCase):
     def test_meta(self, mocked_requests_get):
         """Test `meta` method."""
         api = MagicMock()()
-        api.base_url = "http://foo.bar"
+        api.base_url = "http://foo.bar/"
         api._base_params = "params"
         api._base_headers = "headers"
 
