@@ -21,7 +21,7 @@ class SoccerApiV2(_base.BaseApiV2):
     def __init__(self, api_token: str) -> None:
         """Parameter ``api_token`` is the API token from the SportMonks profile web page."""
         log.info("Initialize soccer API client")
-        super().__init__(base_url="https://soccer.sportmonks.com/api/v2.0", api_token=api_token)
+        super().__init__(base_url="https://soccer.sportmonks.com/api/v2.0/", api_token=api_token)
         log.info("Client initialized, metadata=%s", self.meta())
 
     def meta(self) -> Dict[str, Any]:

@@ -16,7 +16,7 @@ import logging
 import sportmonks._base
 
 
-logging.basicConfig(stream=stdout, level=logging.INFO)
+logging.basicConfig(stream=stdout, level=logging.DEBUG)
 
 
 def test_includes_param_can_be_any_iterable(soccer_api):

@@ -2,9 +2,9 @@
 
 import abc
 
-from os.path import join
 from logging import getLogger
 from typing import Dict, Iterable, Optional, Any
+from urllib.parse import urljoin
 
 import requests
 import pytz
@@ -116,7 +116,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         """
         includes = self._prepare_includes(includes=includes)
 
-        url = join(self.base_url, endpoint)
+        url = urljoin(self.base_url, endpoint)
         params = {**self._base_params, **(params or {}), **{"include": includes}}
         params = self._prepare_params(params=params)
 

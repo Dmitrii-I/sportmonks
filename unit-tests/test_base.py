@@ -39,7 +39,7 @@ class TestBaseApiV20(unittest.TestCase):
     @patch("requests.get")
     def test_http_get_args_building(self, mocked_get):
         """Test that `_http_get` builds the arguments."""
-        api = BaseApiV2(base_url="bar", api_token="foo", tz_name="UTC")
+        api = BaseApiV2(base_url="bar/", api_token="foo", tz_name="UTC")
 
         mocked_response = Mock()
         mocked_response.json.return_value = {"response": "foo"}
@@ -60,7 +60,7 @@ class TestBaseApiV20(unittest.TestCase):
     @patch("requests.get")
     def test_http_get_works_wtih_includes_being_any_iterable(self, mocked_get):
         """Test that `_http_get` works with `includes` parameters being any iterable."""
-        api = BaseApiV2(base_url="bar", api_token="foo", tz_name="UTC")
+        api = BaseApiV2(base_url="bar/", api_token="foo", tz_name="UTC")
 
         includes_iterables = [("foo", "bar"), {"foo", "bar"}, ["foo", "bar"], "foobar"]
 
