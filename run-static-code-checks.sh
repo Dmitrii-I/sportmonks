@@ -28,8 +28,14 @@ set_environment_variables
 activate_virtual_environment
 
 echo "Test code"
+
+echo "Clear mypy cache"
+# Stale cache has lead to tests passing on my machine but not in GitHub Actions
+rm -rf ~/sportmonks/.mypy_cache/
+
 paths="$(/usr/bin/find ~/sportmonks/sportmonks -name '*.py')"
 cd ~/sportmonks
+
 for path in $paths; do
     echo
     echo "##############################################################################"
