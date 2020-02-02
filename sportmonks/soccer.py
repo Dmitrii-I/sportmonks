@@ -266,10 +266,10 @@ class SoccerApiV2(_base.BaseApiV2):
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
         Valid objects are: `fixture`.
         """
-        endpoint = ["highlights", "fixture", fixture_id]
-        log.info("Fetch video highlights of a fixture (id=%s), includes=%s", fixture_id, includes)
-
-        if not fixture_id:
+        if fixture_id:
+            endpoint = ["highlights", "fixture", fixture_id]
+            log.info("Fetch video highlights of a fixture (id=%s), includes=%s", fixture_id, includes)
+        else:
             endpoint = ["highlights"]
             log.info("Fetch video highlights of all fixtures, includes=%s", includes)
 

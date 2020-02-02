@@ -16,8 +16,8 @@ from sportmonks._types import Response
 
 log = getLogger(__name__)
 
-EndpointPart = Union[str, date, int]
-EndpointParts = Union[EndpointPart, List[EndpointPart]]
+EndpointPart = object
+EndpointParts = Union[str, date, int, List[EndpointPart]]
 
 
 class BaseApiV2(metaclass=abc.ABCMeta):
