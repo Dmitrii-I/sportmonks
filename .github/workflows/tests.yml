@@ -47,9 +47,6 @@ jobs:
         shell: bash
         run: ln -s $(pwd) ~/sportmonks
 
-      - name: Test python
-        shell: powershell
-        run: |
-          python --version
-          Get-ChildItem
-          $Env:Path
+      - name: setup virtual environment
+        shell: bash
+        run: ~/sportmonks/setup-venv.sh
