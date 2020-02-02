@@ -21,18 +21,23 @@ trap 'on_error $LINENO' ERR
 trap on_exit EXIT
 trap on_interrupt INT
 
+source ~/sportmonks/functions.sh
+
+echo "Activate virtual environment"
+activate_virtual_environment
+
 echo "Test code"
 paths="$(find ~/sportmonks/sportmonks -name '*.py')"
 for path in $paths; do
     echo
     echo "##############################################################################"
     echo "Test $path"
-    ~/sportmonks/venv/bin/pylava --verbose --options ~/sportmonks/setup.cfg --format pep8 "$path"
-    ~/sportmonks/venv/bin/mypy --verbose --config-file ~/sportmonks/setup.cfg "$path"
+    pylava --verbose --options ~/sportmonks/setup.cfg --format pep8 "$path"
+    mypy --verbose --config-file ~/sportmonks/setup.cfg "$path"
     echo
 done
 
 echo "Check that package and tests code is formatted with 'black --line-length 120'"
-~/sportmonks/venv/bin/black --check --line-length 120 ~/sportmonks/unit-tests
-~/sportmonks/venv/bin/black --check --line-length 120 ~/sportmonks/sportmonks
-~/sportmonks/venv/bin/black --check --line-length 120 ~/sportmonks/integration-tests
+black --check --line-length 120 ~/sportmonks/unit-tests
+black --check --line-length 120 ~/sportmonks/sportmonks
+black --check --line-length 120 ~/sportmonks/integration-tests

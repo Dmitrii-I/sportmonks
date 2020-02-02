@@ -24,6 +24,10 @@ trap on_interrupt INT
 
 echo "Start integration testing of Python package 'sportmonks'"
 
+source ~/sportmonks/functions.sh
+set_environment_variables
+activate_virtual_environment
+
 echo "Loading SportMonks API key from environment variable SPORTMONKS_API_KEY, with fallback to ~/.sportmonks_api_key file."
 
 
@@ -48,7 +52,6 @@ else
 
 fi
 
-
 echo "Run the tests"
-PYTHONPATH=~/sportmonks ~/sportmonks/venv/bin/python3 -m pytest -vv --sportmonks-api-key "$sportmonks_api_key" ~/sportmonks/integration-tests
+PYTHONPATH=~/sportmonks $PYTHON -m pytest -vv --sportmonks-api-key "$sportmonks_api_key" ~/sportmonks/integration-tests
 
