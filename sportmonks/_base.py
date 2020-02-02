@@ -110,7 +110,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
     def _full_url(self, url_parts: EndpointParts) -> str:
         """Return URL built from the base part and other parts (which are not the query string)."""
-        url_parts = [url_parts] if not isinstance(url_parts, list) else url_parts
+        url_parts = [url_parts] if not isinstance(url_parts, list) else url_parts.copy()
 
         full_url = self.base_url.rstrip("/") + "/"
         while url_parts:
@@ -149,6 +149,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
                 raw_response.request.url.replace(self.api_token, "API_TOKEN_REDACTED"),
             )
         response = raw_response.json()
+        log.debug("Response JSON: %s", response)
 
         if "error" in response:
             log.error("Error: %s", response["error"]["message"])
