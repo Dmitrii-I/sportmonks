@@ -29,9 +29,11 @@ activate_virtual_environment
 
 echo "Test code"
 paths="$(/usr/bin/find ~/sportmonks/sportmonks -name '*.py')"
+cd ~/sportmonks
 for path in $paths; do
     echo
     echo "##############################################################################"
+    path="sportmonks/$(basename $path)"
     echo "Test $path"
     pylava --verbose --options ~/sportmonks/setup.cfg --format pep8 "$path"
     mypy --verbose --config-file ~/sportmonks/setup.cfg "$path"
