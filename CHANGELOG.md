@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1
+* Fix [bug](https://github.com/Dmitrii-I/sportmonks/issues/8) in which the package was unusable on Windows because we URLs were constructed using path separator which on Windows is a backslash not a slash. This has been fixed by using `urllib.parse.urljoin` function.
+
 ## 1.1.0
 * Add parameter `includes` to `SoccerApiV2.player` method.
 
