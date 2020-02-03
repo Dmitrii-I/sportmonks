@@ -110,13 +110,13 @@ class BaseApiV2(metaclass=abc.ABCMeta):
 
     def _full_url(self, url_parts: EndpointParts) -> str:
         """Return URL built from the base part and other parts (which are not the query string)."""
-        url_parts = [url_parts] if not isinstance(url_parts, list) else url_parts.copy()
+        url_parts = [url_parts] if not isinstance(url_parts, list) else url_parts
 
         full_url = self.base_url.rstrip("/") + "/"
-        while url_parts:
+        for part in url_parts:
             full_url = full_url.rstrip("/") + "/"
-            part = str(url_parts.pop(0)).rstrip("/")
-            full_url = urljoin(full_url, part)
+            clean_part = str(part).strip("/")
+            full_url = urljoin(full_url, clean_part)
         return full_url
 
     def _http_get(
