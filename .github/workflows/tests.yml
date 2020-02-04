@@ -65,7 +65,7 @@ jobs:
         shell: bash
         run: ~/sportmonks/run-integration-tests.sh
 
-  tests-ubuntu-18:
+  tests-macos-10.15:
     runs-on: macos-10.15
     steps:
 
