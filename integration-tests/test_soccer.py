@@ -559,7 +559,7 @@ def test_commentaries(soccer_api):
 def test_video_highlights(soccer_api):
     """Test `video_highlights` method."""
     highlights = soccer_api.video_highlights(includes=("fixture",))
-    highlights_without_fixture_include = {10324789, 10324789, 10324402}
+    highlights_without_fixture_include = {10324789, 10324789, 10324402, 1281343}
 
     for hl in highlights:
         expected = {"created_at", "fixture_id", "fixture", "location", "event_id", "type"}
