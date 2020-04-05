@@ -567,7 +567,13 @@ def test_video_highlights(soccer_api):
             expected = expected - {"fixture"}
 
         actual = set(hl.keys())
-        logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+        if actual != expected:
+            logging.error(
+                "Fixture ID %s, extra keys: %s, missing keys: %s",
+                hl["fixture_id"],
+                actual - expected,
+                expected - actual,
+            )
         assert expected == actual
 
     fixture_highlights = soccer_api.video_highlights(fixture_id=218832)
