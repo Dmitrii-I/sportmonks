@@ -49,32 +49,6 @@ def test_countries(soccer_api):
         expected = {"name", "id", "extra", "continent", "leagues", "image_path"}
         actual = set(country.keys())
 
-        # Adjust for some countries not having a continent
-        countries_without_continent = {
-            99474,
-            190324,
-            1442002,
-            1884978,
-            3499960,
-            8151924,
-            11311331,
-            12444275,
-            14534056,
-            14566098,
-            14566636,
-            15288356,
-            15629849,
-            25293454,
-            32396817,
-            32533155,
-            34319255,
-            37176064,
-            37200394,
-        }
-
-        if country["id"] in countries_without_continent:
-            expected -= {"continent"}
-
         logging.info(
             "country %s, extra keys: %s, missing keys: %s", country["id"], actual - expected, expected - actual
         )
