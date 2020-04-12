@@ -55,7 +55,7 @@ setup(
     url='https://github.com/Dmitrii-I/sportmonks',
     license='MIT',
     packages=find_packages(exclude=['contrib', 'docs', '*test*']),
-    install_requires=['requests>=2.18.0,<3.0.0'],
+    install_requires=['requests>=2.18.0,<3.0.0', 'tzlocal>=2.0.0,<3.0.0'],
     python_requires='>=3.5.2',
     cmdclass={'upload': UploadCommand}
 )
