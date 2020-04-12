@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.2
+* Fix [bug](https://github.com/Dmitrii-I/sportmonks/issues/9) where `tzlocal` was missing in the `install_requires` of `setup.py`. As a result you could install `sportmonks` but not run it. The bug did not resurface during tests because `tzlocal` was actually specified in the `requirements-tests.txt`.
+
 ## 1.1.1
 * Fix [bug](https://github.com/Dmitrii-I/sportmonks/issues/8) in which the package was unusable on Windows because the URLs were constructed using path separator which on Windows is a backslash not a slash. This has been fixed by using `urllib.parse.urljoin` function.
 
