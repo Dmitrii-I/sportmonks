@@ -206,6 +206,13 @@ class TestSoccerApiV2(unittest.TestCase):
         SoccerApiV2.top_scorers(api, season_id=1, includes=["foo", "bar"])
         api._http_get.assert_called_once_with(endpoint=["topscorers", "season", 1], includes=["foo", "bar"])
 
+    def test_aggregated_top_scorers(self):
+        """Test `aggregated_top_scorers` method."""
+        api = MagicMock()()
+        # noinspection PyCallByClass, PyTypeChecker
+        SoccerApiV2.aggregated_top_scorers(api, season_id=1, includes=["foo", "bar"])
+        api._http_get.assert_called_once_with(endpoint=["topscorers", "season", 1,"aggregated"], includes=["foo", "bar"])
+
     def test_venue(self):
         """Test `venue` method."""
         api = MagicMock()()
