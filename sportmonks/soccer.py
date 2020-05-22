@@ -339,7 +339,7 @@ class SoccerApiV2(_base.BaseApiV2):
         return team_stats["stats"]
 
     def top_scorers(self, season_id: int, includes: Includes = None) -> Response:
-        """Return top scorers of a season.
+        """Return top scorers of stages in a sesason.
 
         Three types of top scorers are returned: most goals, most assists, and most cards.
 
@@ -348,6 +348,19 @@ class SoccerApiV2(_base.BaseApiV2):
         `assistscorers.player`, `assistscorers.team`.
         """
         endpoint = ["topscorers", "season", season_id]
+        log.info("Fetch top scorers of stages in a season (id=%s), includes=%s", season_id, includes)
+        return self._http_get(endpoint=endpoint, includes=includes)
+
+    def aggregated_top_scorers(self, season_id: int, includes: Includes = None) -> Response:
+        """Return top scorers of a sesason.
+
+        Three types of top scorers are returned: most goals, most assists, and most cards.
+
+        Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 3.
+        Valid objects are: `aggregatedGoalscorers.player`, `aggregatedGoalscorers.team` `aggregatedCardscorers.player`, `aggregatedCardscorers.team`,
+        `aggregatedAssistscorers.player`, `aggregatedAssistscorers.team`.
+        """
+        endpoint = ["topscorers", "season", season_id, "aggregated"]
         log.info("Fetch top scorers of a season (id=%s), includes=%s", season_id, includes)
         return self._http_get(endpoint=endpoint, includes=includes)
 
