@@ -814,6 +814,43 @@ def test_top_scorers(soccer_api):
     for assistscorer in top_scorers["assistscorers"]:
         assert {"player", "team", "team_id", "player_id"} <= set(assistscorer.keys())
 
+        
+def test_aggregated_top_scorers(soccer_api):
+    """Test `aggregated_top_scorers` method."""
+    includes = {
+        "aggregatedGoalscorers.player",
+        "aggregatedGoalscorers.team",
+        "aggregatedAssistscorers.player",
+        "aggregatedAssistscorers.team",
+        "aggregatedCardscorers.player",
+        "aggregatedCardscorers.team",
+    }
+
+    aggregated_top_scorers = soccer_api.aggregated_top_scorers(season_id=6361,
+        includes=tuple(includes))
+    expected = {
+        "assistscorers",
+        "cardscorers",
+        "current_round_id",
+        "current_stage_id",
+        "goalscorers",
+        "id",
+        "is_current_season",
+        "league_id",
+        "name",
+    }
+
+    assert expected == set(aggregated_top_scorers.keys())
+
+    for cardscorer in aggregated_top_scorers["cardscorers"]:
+        assert {"player", "team", "team_id", "player_id"} <= set(cardscorer.keys())
+
+    for goalscorer in aggregated_top_scorers["goalscorers"]:
+        assert {"player", "team", "team_id", "player_id"} <= set(goalscorer.keys())
+
+    for assistscorer in aggregated_top_scorers["assistscorers"]:
+        assert {"player", "team", "team_id", "player_id"} <= set(assistscorer.keys())
+
 
 def test_venue(soccer_api):
     """Test `venue` method."""
