@@ -828,11 +828,11 @@ def test_aggregated_top_scorers(soccer_api):
 
     aggregated_top_scorers = soccer_api.aggregated_top_scorers(season_id=6361, includes=tuple(includes))
     expected = {
-        "assistscorers",
-        "cardscorers",
+        "aggregatedAssistscorers",
+        "aggregatedCardscorers",
         "current_round_id",
         "current_stage_id",
-        "goalscorers",
+        "aggregatedGoalscorers",
         "id",
         "is_current_season",
         "league_id",
@@ -841,13 +841,13 @@ def test_aggregated_top_scorers(soccer_api):
 
     assert expected == set(aggregated_top_scorers.keys())
 
-    for cardscorer in aggregated_top_scorers["cardscorers"]:
+    for cardscorer in aggregated_top_scorers["aggregatedCardscorers"]:
         assert {"player", "team", "team_id", "player_id"} <= set(cardscorer.keys())
 
-    for goalscorer in aggregated_top_scorers["goalscorers"]:
+    for goalscorer in aggregated_top_scorers["aggregatedGoalscorers"]:
         assert {"player", "team", "team_id", "player_id"} <= set(goalscorer.keys())
 
-    for assistscorer in aggregated_top_scorers["assistscorers"]:
+    for assistscorer in aggregated_top_scorers["aggregatedAssistscorers"]:
         assert {"player", "team", "team_id", "player_id"} <= set(assistscorer.keys())
 
 
