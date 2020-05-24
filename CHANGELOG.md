@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.0
+* Add `SoccerApiV2.aggregated_top_scorers()` method. This method returns top scorers for aggregated over all stages of a season. The `SoccerApiV2.top_scorers()` method returns top scorers broken down by each stage of the season which is inconvenient if you don't care about the season's stages.
+
 ## 1.1.2
 * Fix [bug](https://github.com/Dmitrii-I/sportmonks/issues/9) where `tzlocal` was missing in the `install_requires` of `setup.py`. As a result you could install `sportmonks` but not run it. The bug did not resurface during tests because `tzlocal` was actually specified in the `requirements-tests.txt`.
 
