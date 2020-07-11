@@ -420,7 +420,11 @@ def test_fixtures_today(soccer_api):
     }
 
     for fixture in fixtures:
-        assert set(essential_includes) <= set(fixture.keys())
+        actual = set(fixture.keys())
+        logging.info("Fixtures %s, missing essential includes: %s", fixture["id"], set(essential_includes) - actual)
+        assert set(essential_includes) <= actual
+
+        logging.info("Fixtures %s, missing keys %s", fixture["id"], expected - actual)
         assert expected <= set(fixture.keys())
 
 
