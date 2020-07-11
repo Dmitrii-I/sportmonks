@@ -390,7 +390,7 @@ def test_fixtures_today(soccer_api):
     return value means we cannot know what includes will be attached to each returned fixture if we request all of
     them. Therefore we request a limited set of includes, one which we assume is available for any fixture.
     """
-    essential_includes = ("localTeam", "visitorTeam", "league", "season", "round", "stage", "venue")
+    essential_includes = ("localTeam", "visitorTeam", "league", "season", "stage", "venue")
     fixtures = soccer_api.fixtures_today(includes=essential_includes)
     assert isinstance(fixtures, list)
 
