@@ -238,6 +238,7 @@ def test_season_results(soccer_api):
     for includes_tuple in includes_tuples:
         season_results = soccer_api.season_results(season_id=759, includes=includes_tuple)
         for result in season_results:
+            logging.info("Test result with ID %s", result["id"])
 
             missing_includes = (set(includes_tuple) - known_missing_includes[result["id"]]) - set(result.keys())
             assert missing_includes == set()
