@@ -41,6 +41,9 @@ echo 'Upgrade pip'
 # https://stackoverflow.com/questions/58627922/pip-install-upgrade-pip-fails-inside-a-windows-virtualenv-with-access-denie
 $PYTHON -m pip install pip==20.2.4
 
+echo 'Install wheel'
+pip install wheel==0.35.1
+
 echo 'Install pip-tools'
 pip install pip-tools==5.3.1
 
