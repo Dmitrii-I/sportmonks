@@ -39,10 +39,10 @@ activate_virtual_environment
 echo 'Upgrade pip'
 # On Windows you cannot replace a binary that is running, hence pip install pip --upgrade fails.
 # https://stackoverflow.com/questions/58627922/pip-install-upgrade-pip-fails-inside-a-windows-virtualenv-with-access-denie
-$PYTHON -m pip install pip==19.3.1
+$PYTHON -m pip install pip==20.2.4
 
 echo 'Install pip-tools'
-pip install pip-tools==4.2.0
+pip install pip-tools==5.3.1
 
 echo 'Install from requirements.txt'
 pip-sync ~/sportmonks/requirements-tests.txt
