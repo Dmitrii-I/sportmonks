@@ -239,7 +239,7 @@ class SoccerApiV2(_base.BaseApiV2):
         """Return all head-to-head fixtures of two teams specified by ``team_ids``.
 
         Parameter ``includes`` specifies objects to include in the response. Maximum level of includes allowed is 2.
-        Valid objects are:	`localTeam`, `visitorTeam`, `substitutions`, `goals`, `cards`, `other`, `lineup`, `bench`,
+        Valid objects are: `localTeam`, `visitorTeam`, `substitutions`, `goals`, `cards`, `other`, `lineup`, `bench`,
         `stats`, `comments`, `tvstations`, `highlights`, `league`, `season`, `round`, `stage`, `referee`, `events`,
         `venue`, `trends`.
         """
