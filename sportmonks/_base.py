@@ -5,7 +5,7 @@ import abc
 from logging import getLogger
 from typing import Dict, Iterable, Optional, Any, Union, List
 from urllib.parse import urljoin
-from datetime import date
+from datetime import date, tzinfo
 
 import requests
 import pytz
@@ -32,6 +32,8 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         self.api_token = api_token
         if not self.api_token:
             raise ApiKeyMissingError("API key must be provided!")
+
+        self.timezone: Optional[tzinfo]
 
         if tz_name:
             self.timezone = pytz.timezone(tz_name)
