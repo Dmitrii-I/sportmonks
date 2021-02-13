@@ -53,5 +53,5 @@ else
 fi
 
 echo "Run the tests"
-PYTHONPATH=~/sportmonks $PYTHON -m pytest -vv --sportmonks-api-key "$sportmonks_api_key" ~/sportmonks/integration-tests
+PYTHONPATH=~/sportmonks $PYTHON -m pytest -vv --sportmonks-api-key "$sportmonks_api_key" ~/sportmonks/integration-tests --log-cli-level=DEBUG
 
