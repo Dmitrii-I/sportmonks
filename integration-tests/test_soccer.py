@@ -97,7 +97,7 @@ def test_leagues(soccer_api):
     for league in leagues:
         actual = set(league.keys())
 
-        if league["id"] in {513, 1659}:
+        if league["id"] in {513}:
             # This league is missing seasons include. Probably because of 'rona.
             assert (expected - {"season"}) == set(league.keys())
         else:
