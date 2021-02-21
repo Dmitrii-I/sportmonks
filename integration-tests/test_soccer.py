@@ -645,10 +645,13 @@ def test_standings(soccer_api):
 
     for standings_season_stage in standings:
         for standing_entry in standings_season_stage["standings"]:
-            actual = set(standing_entry.keys())
-            logging.info("evaluate a standing entry")
-            logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
-            assert expected == actual
+            standings_groups = standing_entry["standings"] if "standings" in standing_entry else [standing_entry]
+
+            for standing_one_group in standings_groups:
+                logging.debug("group standings: %s", standing_one_group)
+                actual = set(standing_one_group.keys())
+                logging.info("extra keys: %s, missing keys: %s", actual - expected, expected - actual)
+                assert expected == actual
 
     try:
         standings = soccer_api.standings(season_id=6361, live=True, includes=includes)
