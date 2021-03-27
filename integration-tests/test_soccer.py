@@ -989,7 +989,7 @@ def test_squad(soccer_api):
 def test_meta(soccer_api):
     """Test `meta` method."""
     meta = soccer_api.meta()
-    assert {"subscription", "plan", "sports"} == set(meta.keys())
+    assert {"plans", "sports"} == set(meta.keys())
 
 
 def test_season_stages(soccer_api):
