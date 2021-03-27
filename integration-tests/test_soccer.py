@@ -168,7 +168,7 @@ def test_season_results(soccer_api):
     includes_tuples = [
         ("localTeam", "visitorTeam", "substitutions", "goals", "cards", "other", "corners", "lineup", "bench"),
         ("sidelined", "stats", "comments", "tvstations", "highlights", "league", "season", "round", "stage"),
-        ("referee", "events", "venue", "flatOdds", "inplay", "localCoach", "visitorCoach", "trends"),
+        ("referee", "events", "venue", "flatOdds", "localCoach", "visitorCoach"),
         ("odds",),
     ]
 
