@@ -24,11 +24,11 @@ mypy==0.790               # via -r requirements-tests.in
 packaging==20.4           # via pytest, sphinx
 pathspec==0.8.1           # via black
 pluggy==0.13.1            # via pytest
-py==1.9.0                 # via pytest
+py==1.10.0                # via pytest
 pycodestyle==2.6.0        # via pylava
 pydocstyle==5.1.1         # via pylava
 pyflakes==2.2.0           # via pylava
-pygments==2.7.2           # via sphinx
+pygments==2.9.0           # via sphinx
 pylava==0.3.0             # via -r requirements-tests.in
 pyparsing==2.4.7          # via packaging
 pytest==6.1.2             # via -r requirements-tests.in
