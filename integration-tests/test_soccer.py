@@ -95,16 +95,10 @@ def test_leagues(soccer_api):
     }
 
     for league in leagues:
+        logging.info("test league %s", league["id"])
         actual = set(league.keys())
-
-        if league["id"] in {513}:
-            # This league is missing seasons include. Probably because of 'rona.
-            assert (expected - {"season"}) == set(league.keys())
-        else:
-            logging.info(
-                "League %s, extra keys: %s, missing keys: %s", league["id"], actual - expected, expected - actual
-            )
-            assert expected == set(league.keys())
+        logging.info("League %s, extra keys: %s, missing keys: %s", league["id"], actual - expected, expected - actual)
+        assert expected == set(league.keys())
 
 
 def test_league(soccer_api):
