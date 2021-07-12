@@ -92,6 +92,7 @@ def test_leagues(soccer_api):
         "logo_path",
         "active",
         "type",
+        "is_friendly",
     }
 
     for league in leagues:
@@ -120,6 +121,7 @@ def test_league(soccer_api):
         "logo_path",
         "active",
         "type",
+        "is_friendly",
     } | includes
     actual = set(premiership.keys())
 
