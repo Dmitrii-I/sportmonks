@@ -45,7 +45,7 @@ echo 'Install wheel'
 pip install wheel==0.35.1
 
 echo 'Install pip-tools'
-pip install pip-tools==5.3.1
+pip install pip-tools==6.4.0
 
 echo 'Install from requirements.txt'
 pip-sync ~/sportmonks/requirements-tests.txt
