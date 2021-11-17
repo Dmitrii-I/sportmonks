@@ -39,7 +39,7 @@ activate_virtual_environment
 echo 'Upgrade pip'
 # On Windows you cannot replace a binary that is running, hence pip install pip --upgrade fails.
 # https://stackoverflow.com/questions/58627922/pip-install-upgrade-pip-fails-inside-a-windows-virtualenv-with-access-denie
-$PYTHON -m pip install pip==20.2.4
+$PYTHON -m pip install pip==21.3.1
 
 echo 'Install wheel'
 pip install wheel==0.35.1
