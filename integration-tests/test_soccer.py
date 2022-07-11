@@ -933,7 +933,6 @@ def test_player(soccer_api):
         "position_id",
         "team_id",
         "weight",
-        "team",
         "position",
         "stats",
         "trophies",
