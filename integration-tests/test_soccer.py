@@ -936,6 +936,7 @@ def test_player(soccer_api):
         "position",
         "stats",
         "trophies",
+        "team",
         "display_name",
     }
 
