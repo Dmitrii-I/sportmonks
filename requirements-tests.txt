@@ -106,6 +106,12 @@ tomli==1.2.2
     #   pytest
 typed-ast==1.5.4
     # via -r requirements-tests.in
+types-pytz==2022.2.1.0
+    # via -r requirements-tests.in
+types-requests==2.28.9
+    # via -r requirements-tests.in
+types-urllib3==1.26.23
+    # via types-requests
 typing-extensions==4.0.0
     # via
     #   black
