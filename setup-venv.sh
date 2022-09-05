@@ -23,7 +23,7 @@ echo 'Upgrade pip'
 $PYTHON -m pip install pip==21.3.1
 
 echo 'Install wheel'
-pip install wheel==0.35.1
+pip install wheel==0.37.1
 
 echo 'Install pip-tools'
 pip install pip-tools==6.4.0
