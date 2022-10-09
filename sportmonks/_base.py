@@ -6,6 +6,7 @@ from logging import getLogger
 from typing import Dict, Iterable, Optional, Any, Union, List
 from urllib.parse import urljoin
 from datetime import date, tzinfo
+from json.decoder import JSONDecodeError
 
 import requests
 import pytz
@@ -145,12 +146,19 @@ class BaseApiV2(metaclass=abc.ABCMeta):
         )
         self.http_requests_made += 1
         raw_response = requests.get(url=url, params=params, headers=self._base_headers)
+        log.info("HTTP status code: %s", raw_response.status_code)
         if raw_response.request.url:
             log.debug(
                 "GET succeeded of the complete url: %s",
                 raw_response.request.url.replace(self.api_token, "API_TOKEN_REDACTED"),
             )
-        response = raw_response.json()
+        try:
+            response = raw_response.json()
+        except JSONDecodeError as e:
+            log.error("response in not valid json")
+            log.error("response: %s", raw_response.text)
+            raise e
+
         log.debug("Response JSON: %s", response)
 
         if "error" in response:
