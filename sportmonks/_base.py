@@ -122,6 +122,7 @@ class BaseApiV2(metaclass=abc.ABCMeta):
             full_url = urljoin(full_url, clean_part)
         return full_url
 
+    # pylava:ignore=C901
     def _http_get(
         self, endpoint: EndpointParts, params: Optional[Dict[str, Any]] = None, includes: Optional[Iterable[str]] = None
     ) -> Response:
